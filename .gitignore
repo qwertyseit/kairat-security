@@ -1,0 +1,8 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editor / tooling
+*.log
+node_modules/

@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kairat Security — охрана объектов в Алматы</title>
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  АССЕТЫ: все картинки — локально в assets/ (перенесены с временных ссылок
+  Figma MCP перед деплоем): хиро hero.jpg, логотип logo.png + wordmark.svg,
+  услуги service-*.png, карта geography-map.png, клиенты clients-bg.png /
+  client-logo-*.png / client-letter-*.png.
+
+  ШРИФТЫ: в макете Druk Cyr (заголовок), SF Pro Display (текст),
+  Bebas Neue Pro (крупные цифры-показатели). Файлы шрифтов — в fonts/.
+  Если Bebas Neue Pro появится — положи fonts/BebasNeuePro-Bold.woff2 (и т.д.).
+  Пока подгружаются близкие бесплатные: Oswald + Inter + Bebas Neue (кириллица есть).
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&family=PT+Mono&display=swap" rel="stylesheet">
+
+<style>
+  /* ── Шрифты ──────────────────────────────────────────────── */
+  /* Файлы в fonts/ должны называться ровно так (переименуй свои при необходимости).
+     Браузер сам возьмёт тот формат, который найдёт: woff2 / otf / ttf. */
+  @font-face {
+    font-family: "Druk Cyr";
+    src: url("fonts/DrukCyr-Medium.woff2") format("woff2"),
+         url("fonts/DrukCyr-Medium.otf") format("opentype"),
+         url("fonts/DrukCyr-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Druk Cyr";
+    src: url("fonts/DrukCyr-Bold.woff2") format("woff2"),
+         url("fonts/DrukCyr-Bold.woff") format("woff"),
+         url("fonts/DrukCyr-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "SF Pro Display";
+    src: url("fonts/SFProDisplay-Regular.woff2") format("woff2"),
+         url("fonts/SFProDisplay-Regular.otf") format("opentype"),
+         url("fonts/SFProDisplay-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "SF Pro Display";
+    src: url("fonts/SFProDisplay-Medium.woff2") format("woff2"),
+         url("fonts/SFProDisplay-Medium.otf") format("opentype"),
+         url("fonts/SFProDisplay-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Bebas Neue Pro";
+    src: url("fonts/BebasNeuePro-Bold.woff2") format("woff2"),
+         url("fonts/BebasNeuePro-Bold.woff") format("woff"),
+         url("fonts/BebasNeuePro-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  :root {
+    --font-display: "Druk Cyr", "Oswald", sans-serif;
+    --font-body: "SF Pro Display", "Inter", -apple-system, sans-serif;
+    --font-mono: "PT Mono", monospace;
+    --font-numbers: "Bebas Neue Pro", "Bebas Neue", sans-serif;
+    --white: #ffffff;
+    --hairline: rgba(255, 255, 255, 0.45);
+    --line: rgba(255, 255, 255, 0.3);      /* рамки списка услуг (1px в макете) */
+    --line-dim: rgba(255, 255, 255, 0.1);  /* разделители строк списка */
+    --label: #585858;                      /* лейблы секций [ ... ] */
+    --overlay: rgba(0, 0, 0, 0.4);
+    --pad-side: 60px;
+    --content-max: 1080px; /* ширина контента макета (1200 − 2×60) */
+    /* горизонтальный отступ секций: не меньше --pad-side, на широких экранах
+       центрирует контент по ширине макета (фон при этом остаётся во всю ширину) */
+    --pad-x: max(var(--pad-side), calc((100% - var(--content-max)) / 2));
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--white);
+    background: #0a0a0a;
+  }
+
+  img { display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Хиро ────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    isolation: isolate;
+    background-image: url("assets/hero.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--overlay);
+    z-index: -1;
+  }
+
+  /* ── Шапка ───────────────────────────────────────────────── */
+  .topbar {
+    padding: 0 var(--pad-side);
+  }
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo__mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 24px;
+    object-fit: cover;
+  }
+  .logo__word {
+    width: 92px;
+    height: 26px;
+  }
+
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .menu a {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 0; /* тап-таргет */
+    transition: opacity 0.2s;
+  }
+  .menu a:hover { opacity: 0.7; }
+  .menu a:focus-visible,
+  .cta:focus-visible,
+  .burger:focus-visible {
+    outline: 1.5px solid var(--white);
+    outline-offset: 3px;
+  }
+
+  .chevron { width: 9px; height: 5px; }
+
+  /* Бургер (только мобилка) */
+  .burger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    z-index: 20;
+  }
+  .burger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--white);
+    transition: transform 0.25s, opacity 0.25s;
+  }
+  .nav-open .burger span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  .nav-open .burger span:nth-child(2) { opacity: 0; }
+  .nav-open .burger span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+  /* ── Контент хиро ────────────────────────────────────────── */
+  .hero__content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    row-gap: 50px;
+    padding: 0 182px 60px var(--pad-side);
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+    max-width: 515px;
+  }
+
+  .hero__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 52px;
+    width: 328px;
+  }
+  .hero__text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.25;
+    width: 100%;
+  }
+
+  .cta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .cta:hover { opacity: 0.7; }
+  .cta svg { width: 17px; height: 14px; flex-shrink: 0; }
+
+  /* ── Услуги ──────────────────────────────────────────────── */
+  .services {
+    background: #101010;
+    padding: 80px var(--pad-x);
+  }
+
+  .services__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    row-gap: 32px;
+    margin-bottom: 48px;
+  }
+  /* лейбл секции: [ ... ] — общий для всех блоков */
+  .section-label {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--label);
+  }
+  .services__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+    max-width: 492px;
+  }
+
+  .services__list {
+    position: relative;
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  /* вертикальный разделитель колонок */
+  .services__list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 436px;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .services__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line-dim);
+  }
+  .services__row:first-child { padding-top: 0; }
+  .services__row:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .services__lead {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    flex: 1;
+    padding-right: 40px;
+  }
+  .services__img {
+    width: 110px;
+    height: 70px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .services__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 1;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+  .services__desc {
+    width: 396px;
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1.25;
+    opacity: 0.6;
+  }
+
+  /* ── О компании ──────────────────────────────────────────── */
+  .about {
+    background: #101010;
+    display: flex;
+    align-items: flex-end;
+    gap: 143px;
+    padding: 80px var(--pad-x);
+  }
+
+  /* левая колонка: лейбл → лид-текст → показатель «10» */
+  .about__side {
+    flex-shrink: 0;
+    width: 315px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 184px;
+  }
+  .about__intro {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  /* правая колонка: заголовок+описание → сертификаты → показатели */
+  .about__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 63px;
+  }
+  .about__lead {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    width: 100%;
+  }
+  .about__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .about__desc {
+    max-width: 434px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .about__certs {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .about__cert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .about__cert span {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .about__stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 95px;
+  }
+  .about__num {
+    font-family: var(--font-numbers);
+    font-weight: 700;
+    font-size: 90px;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+  .about__cap {
+    width: 144px;
+    margin-top: 6px;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  .about__cap--narrow { width: 101px; }
+  /* подписи правых показателей (24/7, >34, >43) — SF Pro Semibold;
+     левый показатель «10» остаётся Bold */
+  .about__stats .about__cap { font-weight: 600; }
+
+  /* ── География ───────────────────────────────────────────── */
+  .geography {
+    position: relative;
+    min-height: 797px;
+    padding: 91px var(--pad-x) 80px;
+    background: #101010;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* карта: 1301×749, фон прозрачный, opacity .5. позиционируем относительно
+     центрированного кадра 1200 (frame-left = 50%−600, карта = frame-left−386) */
+  .geography__map {
+    position: absolute;
+    z-index: -1;
+    width: 1301px;
+    height: 749px;
+    left: calc(50% - 986px);
+    top: calc(50% + 24px);
+    transform: translateY(-50%);
+    opacity: 0.5;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .geography__label {
+    display: block;
+    margin-bottom: 30px;
+  }
+  .geography__title {
+    max-width: 560px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  /* 4 показателя сеткой 2×2, прижаты к правому краю контента (как в макете) */
+  .geography__stats {
+    width: max-content;
+    max-width: 100%;
+    margin-top: 73px;
+    margin-left: auto;
+    margin-right: -15px; /* блок заходит на ~15px в правый паддинг, как в макете */
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 138px;
+    row-gap: 15px;
+  }
+  .geography__value {
+    font-family: var(--font-numbers);
+    font-weight: 700;
+    font-size: 118px;
+    line-height: 0.9;
+    color: var(--white);
+    white-space: nowrap;
+  }
+  .geography__caption {
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+    color: var(--white);
+    white-space: nowrap;
+  }
+  /* «Договоров продлеваются…» — единственная подпись в две строки (ширина 200) */
+  .geography__caption--wide {
+    width: 200px;
+    white-space: normal;
+  }
+
+  /* ── Оставьте заявку ────────────────────────────────────── */
+  .request {
+    background: #101010;
+    padding: 80px var(--pad-x);
+  }
+  .request__card {
+    min-height: 334px;
+    padding: 65px 50px 64px 92px;
+    border-radius: 15px;
+    background: #333333;
+    display: flex;
+    align-items: center;
+    gap: 187px;
+  }
+  .request__content {
+    width: 401px;
+    flex-shrink: 0;
+  }
+  .request__head {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 20px;
+  }
+  .request__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .request__text {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+  }
+  .request__form {
+    width: 350px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+  .request__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .request__field {
+    width: 100%;
+    height: 50px;
+    padding: 0 33px;
+    border: 0;
+    border-radius: 8px;
+    background: #272727;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .request__field::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+  .request__agree {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #999999;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .request__checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 1px solid #8e8e8e;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .request__checkbox:checked {
+    background:
+      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 4px 9px / 6px 6px no-repeat,
+      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 8px 8px / 9px 7px no-repeat;
+  }
+  .request__submit {
+    width: 100%;
+    height: 26px;
+    padding-bottom: 14px;
+    border: 0;
+    border-bottom: 1px solid var(--hairline);
+    background: transparent;
+    color: var(--white);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .request__submit:hover { opacity: 0.7; }
+  .request__submit svg {
+    width: 13px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+  .request__field:focus-visible,
+  .request__checkbox:focus-visible,
+  .request__submit:focus-visible {
+    outline: 1.5px solid var(--white);
+    outline-offset: 3px;
+  }
+
+  /* ── Клиенты ─────────────────────────────────────────────── */
+  .clients {
+    position: relative;
+    min-height: 1372px;
+    padding: 91px var(--pad-x) 80px;
+    background: #101010;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .clients__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .clients::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--overlay);
+  }
+  .clients__inner {
+    position: relative;
+    width: 100%;
+    max-width: var(--content-max);
+    height: 1201px;
+    margin: 0 auto;
+  }
+  .clients .section-label {
+    color: var(--white);
+  }
+  .clients__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .clients__title {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    width: 438px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .clients__intro {
+    position: absolute;
+    top: 49px;
+    left: 695px;
+    width: 385px;
+  }
+  .clients__text {
+    margin-bottom: 23px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .clients__cta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 35px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid var(--hairline);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .clients__cta:hover { opacity: 0.7; }
+  .clients__cta:focus-visible {
+    outline: 1.5px solid var(--white);
+    outline-offset: 3px;
+  }
+  .clients__cta svg {
+    width: 17px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+  .clients__logos {
+    position: absolute;
+    inset: 268px 0 auto 0;
+  }
+  .clients__logo-card {
+    position: absolute;
+    width: 165px;
+    height: 131px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(21px);
+    backdrop-filter: blur(21px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .clients__logo-card--nomad { left: 364px; top: 0; }
+  .clients__logo-card--sultan { left: 733px; top: 0; }
+  .clients__logo-card--round { left: 918px; top: 0; }
+  .clients__logo-card--luxcar { left: 0; top: 150px; }
+  .clients__logo-card--sinomost { left: 185px; top: 150px; }
+  .clients__logo-card--xcmg { left: 548px; top: 150px; }
+  .clients__logo-card--samruk { left: 733px; top: 150px; }
+  .clients__logo-card--ktz { left: 364px; top: 300px; }
+  .clients__logo-card--damu { left: 548px; top: 300px; }
+  .clients__logo-card--kep { left: 918px; top: 300px; }
+  .clients__logo {
+    max-width: 78%;
+    max-height: 82px;
+    object-fit: contain;
+  }
+  .clients__logo--nomad { width: 120px; }
+  .clients__logo--sultan { width: 112px; }
+  .clients__logo--round { width: 88px; }
+  .clients__logo--luxcar { width: 83px; }
+  .clients__logo--sinomost { width: 114px; }
+  .clients__logo--xcmg { width: 88px; }
+  .clients__logo--samruk { width: 111px; }
+  .clients__logo--ktz { width: 111px; }
+  .clients__logo--damu { width: 121px; }
+  .clients__logo--kep { width: 114px; }
+  .clients__letters-label {
+    position: absolute;
+    top: 768px;
+    left: 0;
+  }
+  .clients__letters-title {
+    position: absolute;
+    top: 810px;
+    left: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .clients__letters {
+    position: absolute;
+    top: 923px;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 346px);
+    gap: 21px;
+  }
+  .clients__letter {
+    width: 346px;
+    height: 244px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  /* ── Финальный CTA ──────────────────────────────────────── */
+  .final-cta {
+    position: relative;
+    min-height: 960px;
+    background: #101010;
+    overflow: hidden;
+  }
+  .final-cta__inner {
+    position: relative;
+    width: 100%;
+    max-width: var(--content-max);
+    height: 785px;
+    margin: 0 auto;
+  }
+  .final-cta__title {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    width: 550px;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 80px;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .final-cta__line {
+    position: absolute;
+    display: block;
+    background: var(--line);
+    pointer-events: none;
+  }
+  .final-cta__line--top {
+    top: 344px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+  .final-cta__line--center {
+    top: 344px;
+    left: 50%;
+    width: 1px;
+    height: 441px;
+  }
+  .final-cta__line--right-top,
+  .final-cta__line--right-bottom {
+    left: 810px;
+    width: 1px;
+    height: 147px;
+  }
+  .final-cta__line--right-top { top: 344px; }
+  .final-cta__line--right-bottom { top: 638px; }
+  .final-cta__line--logo-left {
+    top: 565px;
+    left: 540px;
+    width: 60px;
+    height: 1px;
+  }
+  .final-cta__line--logo-right {
+    top: 565px;
+    right: 0;
+    width: 60px;
+    height: 1px;
+  }
+  .final-cta__content {
+    position: absolute;
+    top: 407px;
+    left: 95px;
+    width: 350px;
+  }
+  .final-cta__text {
+    width: 350px;
+    margin-bottom: 27px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .final-cta__form {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+  }
+  .final-cta__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .final-cta__field {
+    width: 100%;
+    height: 50px;
+    padding: 0 33px;
+    border: 0;
+    border-radius: 8px;
+    background: #1c1c1c;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .final-cta__field::placeholder {
+    color: #999999;
+    opacity: 1;
+  }
+  .final-cta__agree {
+    min-height: 20px;
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #999999;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .final-cta__checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 1px solid #8e8e8e;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .final-cta__checkbox:checked {
+    background:
+      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 4px 9px / 6px 6px no-repeat,
+      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 8px 8px / 9px 7px no-repeat;
+  }
+  .final-cta__submit {
+    width: 100%;
+    height: 27px;
+    margin-top: 35px;
+    padding-bottom: 14px;
+    border: 0;
+    border-bottom: 1px solid var(--hairline);
+    background: transparent;
+    color: var(--white);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .final-cta__submit:hover { opacity: 0.7; }
+  .final-cta__submit svg {
+    width: 13px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+  .final-cta__field:focus-visible,
+  .final-cta__checkbox:focus-visible,
+  .final-cta__submit:focus-visible {
+    outline: 1.5px solid var(--white);
+    outline-offset: 3px;
+  }
+  .final-cta__wordmark {
+    position: absolute;
+    top: 511px;
+    left: 620px;
+    width: 380px;
+    height: 107px;
+  }
+  .final-cta__wordmark img {
+    width: 100%;
+    height: 100%;
+  }
+  .final-cta__agency {
+    position: absolute;
+    left: 30px;
+    bottom: -30px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 210px;
+    line-height: 0.85;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--white);
+    pointer-events: none;
+  }
+
+  @media (max-width: 1100px) and (min-width: 769px) {
+    .request__card {
+      padding-right: 50px;
+      padding-left: 50px;
+      gap: 48px;
+    }
+    .request__content {
+      width: auto;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .clients {
+      min-height: auto;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .clients__inner {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .clients__label,
+    .clients__title,
+    .clients__intro,
+    .clients__logos,
+    .clients__logo-card,
+    .clients__letters-label,
+    .clients__letters-title,
+    .clients__letters {
+      position: static;
+    }
+    .clients__title {
+      width: 438px;
+      max-width: 100%;
+      margin-top: 36px;
+    }
+    .clients__intro {
+      width: 385px;
+      max-width: 100%;
+      margin-top: 32px;
+      margin-left: auto;
+    }
+    .clients__logos {
+      margin-top: 64px;
+      display: grid;
+      grid-template-columns: repeat(5, 165px);
+      justify-content: space-between;
+      gap: 20px 12px;
+    }
+    .clients__logo-card {
+      width: 165px;
+      height: 131px;
+    }
+    .clients__letters-label {
+      margin-top: 70px;
+    }
+    .clients__letters-title {
+      margin-top: 32px;
+    }
+    .clients__letters {
+      margin-top: 42px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 21px;
+    }
+    .clients__letter {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 346 / 244;
+    }
+
+    .final-cta {
+      min-height: auto;
+      padding: 80px var(--pad-x);
+    }
+    .final-cta__inner {
+      height: auto;
+      display: grid;
+      grid-template-columns: minmax(300px, 350px) minmax(320px, 1fr);
+      gap: 64px;
+      align-items: center;
+    }
+    .final-cta__title,
+    .final-cta__content,
+    .final-cta__wordmark {
+      position: static;
+    }
+    .final-cta__title {
+      grid-column: 1 / -1;
+      width: 550px;
+      max-width: 100%;
+      margin: 0 auto;
+      transform: none;
+    }
+    .final-cta__line {
+      display: none;
+    }
+    .final-cta__content {
+      width: 100%;
+    }
+    .final-cta__form,
+    .final-cta__text {
+      width: 100%;
+    }
+    .final-cta__wordmark {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 380 / 107;
+    }
+    .final-cta__agency {
+      position: static;
+      grid-column: 1 / -1;
+      margin: 42px 0 -50px -30px;
+      font-size: clamp(96px, 15vw, 150px);
+    }
+  }
+
+  /* ── Мобилка ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    :root { --pad-side: 20px; }
+
+    .menu {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(10, 10, 10, 0.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .nav-open .menu {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .menu a {
+      font-size: 18px;
+      padding: 14px 0;
+    }
+
+    .burger { display: flex; }
+
+    .hero__content {
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 40px;
+      padding: 0 var(--pad-side) 40px var(--pad-side);
+    }
+    .hero__title {
+      font-size: clamp(38px, 10.5vw, 56px);
+      max-width: 100%;
+    }
+    .hero__aside {
+      width: 100%;
+      align-items: flex-start;
+      gap: 36px;
+    }
+
+    .services { padding: 60px var(--pad-side); }
+    .services__head { margin-bottom: 40px; }
+    .services__title {
+      font-size: clamp(38px, 10.5vw, 56px);
+      max-width: 100%;
+    }
+    .services__list { padding: 20px 0; }
+    .services__list::before { display: none; }
+    .services__row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 0;
+    }
+    .services__lead {
+      gap: 24px;
+      padding-right: 0;
+    }
+    .services__name { font-size: clamp(26px, 7.5vw, 39px); }
+    .services__desc {
+      width: 100%;
+      font-size: 16px;
+    }
+
+    .about {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 48px;
+      padding: 60px var(--pad-side);
+    }
+    .about__side {
+      width: 100%;
+      gap: 40px;
+    }
+    .about__main { gap: 40px; }
+    .about__title {
+      font-size: clamp(34px, 9vw, 52px);
+    }
+    .about__desc { max-width: 100%; }
+    .about__certs { gap: 14px; }
+    .about__stats {
+      flex-wrap: wrap;
+      gap: 32px 48px;
+    }
+    .about__num { font-size: 72px; }
+
+    .geography {
+      min-height: auto;
+      padding: 60px var(--pad-side);
+    }
+    .geography__map {
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      transform: none;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.3;
+    }
+    .geography__label { margin-bottom: 28px; }
+    .geography__title {
+      max-width: 100%;
+      font-size: clamp(38px, 10.5vw, 56px);
+    }
+    .geography__stats {
+      width: 100%;
+      margin-top: 48px;
+      margin-left: 0;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 24px;
+      row-gap: 36px;
+    }
+    .geography__value { font-size: 72px; }
+    .geography__caption { font-size: 14px; white-space: normal; }
+    .geography__caption--wide { width: auto; }
+
+    .request {
+      padding: 60px var(--pad-side);
+    }
+    .request__card {
+      min-height: auto;
+      padding: 32px 24px;
+      border-radius: 12px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .request__content,
+    .request__form {
+      width: 100%;
+    }
+    .request__head {
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+    .request__title {
+      font-size: clamp(34px, 9vw, 48px);
+    }
+    .request__text {
+      font-size: 16px;
+      line-height: 1.1;
+    }
+    .request__agree {
+      min-height: 44px;
+      align-items: flex-start;
+      padding-top: 12px;
+      white-space: normal;
+      line-height: 1.15;
+    }
+    .request__submit {
+      height: 44px;
+      align-items: flex-start;
+    }
+
+    .clients {
+      min-height: auto;
+      padding: 60px var(--pad-side);
+    }
+    .clients__bg {
+      object-position: 56% center;
+    }
+    .clients__inner {
+      height: auto;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .clients__label,
+    .clients__title,
+    .clients__intro,
+    .clients__logos,
+    .clients__logo-card,
+    .clients__letters-label,
+    .clients__letters-title,
+    .clients__letters {
+      position: static;
+    }
+    .clients__title {
+      width: 100%;
+      margin-top: 36px;
+      font-size: clamp(38px, 10.5vw, 56px);
+    }
+    .clients__intro {
+      width: 100%;
+      margin-top: 36px;
+    }
+    .clients__text {
+      max-width: 340px;
+      margin-bottom: 24px;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .clients__cta {
+      min-height: 44px;
+      padding-bottom: 16px;
+    }
+    .clients__logos {
+      width: 100%;
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .clients__logo-card {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 165 / 131;
+    }
+    .clients__letters-label {
+      margin-top: 62px;
+    }
+    .clients__letters-title {
+      margin-top: 32px;
+      font-size: clamp(38px, 10.5vw, 56px);
+    }
+    .clients__letters {
+      width: 100%;
+      margin-top: 38px;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .clients__letter {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 346 / 244;
+    }
+
+    .final-cta {
+      min-height: auto;
+      padding: 60px var(--pad-side) 0;
+    }
+    .final-cta__inner {
+      height: auto;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .final-cta__title,
+    .final-cta__content,
+    .final-cta__wordmark {
+      position: static;
+    }
+    .final-cta__title {
+      width: 100%;
+      transform: none;
+      font-size: clamp(38px, 10.5vw, 56px);
+    }
+    .final-cta__line {
+      display: none;
+    }
+    .final-cta__content {
+      width: 100%;
+      margin-top: 52px;
+    }
+    .final-cta__text {
+      width: 100%;
+      margin-bottom: 28px;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .final-cta__form {
+      width: 100%;
+    }
+    .final-cta__agree {
+      min-height: 44px;
+      align-items: flex-start;
+      padding-top: 12px;
+      white-space: normal;
+      line-height: 1.15;
+    }
+    .final-cta__submit {
+      height: 44px;
+      margin-top: 28px;
+      align-items: flex-start;
+    }
+    .final-cta__wordmark {
+      width: 100%;
+      height: auto;
+      margin-top: 64px;
+      aspect-ratio: 380 / 107;
+    }
+    .final-cta__agency {
+      position: static;
+      width: max-content;
+      margin: 56px 0 -16px -20px;
+      font-size: clamp(78px, 24vw, 118px);
+      line-height: 0.85;
+    }
+  }
+</style>
+</head>
+<body id="top">
+
+<section class="hero">
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="logo" href="#top" aria-label="Kairat Security — на главную">
+        <img class="logo__mark" src="assets/logo.png" alt="">
+        <img class="logo__word" src="assets/wordmark.svg" alt="Kairat Security">
+      </a>
+
+      <nav class="menu" id="menu">
+        <a href="#top">Главная</a>
+        <a href="#services">Услуги
+          <svg class="chevron" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.5 0.5L4.5 4L8.5 0.5" stroke="white" stroke-width="0.8"/>
+          </svg>
+        </a>
+        <a href="#clients">Наши клиенты</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="hero__content">
+    <h1 class="hero__title">Обеспечиваем комплексную безопасность с&nbsp;2016 года</h1>
+
+    <div class="hero__aside">
+      <p class="hero__text">Охранное агентство «Kairat Security» обеспечивает круглосуточную охрану объектов и&nbsp;персонала любой сложности</p>
+
+      <a class="cta" href="#contacts">
+        Оставить заявку
+        <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<section class="services" id="services">
+
+  <div class="services__head">
+    <p class="section-label">[ Услуги ]</p>
+    <h2 class="services__title">Полный спектр услуг в&nbsp;сфере охраны и&nbsp;безопасности</h2>
+  </div>
+
+  <div class="services__list">
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-physical.png" alt="">
+        <h3 class="services__name">Физическая охрана</h3>
+      </div>
+      <p class="services__desc">Обеспечиваем комплексную безопасность и&nbsp;контроль доступа на&nbsp;вашей территории</p>
+    </div>
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-technical.png" alt="">
+        <h3 class="services__name">Техническая охрана</h3>
+      </div>
+      <p class="services__desc">Проектируем и&nbsp;монтируем современные системы видеонаблюдения и&nbsp;сигнализации</p>
+    </div>
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-gbr.png" alt="">
+        <h3 class="services__name">Пультовая охрана (ГБР)</h3>
+      </div>
+      <p class="services__desc">Осуществляем круглосуточный мониторинг и&nbsp;мгновенное вооруженное реагирование на&nbsp;сигналы тревоги</p>
+    </div>
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-cargo.png" alt="">
+        <h3 class="services__name">Сопровождение грузов</h3>
+      </div>
+      <p class="services__desc">Гарантируем сохранность и&nbsp;безопасное перемещение ваших материальных ценностей</p>
+    </div>
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-antispy.png" alt="">
+        <h3 class="services__name">Антишпионская проверка помещений и&nbsp;транспорта</h3>
+      </div>
+      <p class="services__desc">Выявляем и&nbsp;устраняем каналы утечки информации, обеспечивая полную конфиденциальность</p>
+    </div>
+
+    <div class="services__row">
+      <div class="services__lead">
+        <img class="services__img" src="assets/service-bodyguard.png" alt="">
+        <h3 class="services__name">Услуга телохранителей</h3>
+      </div>
+      <p class="services__desc">Обеспечиваем личную безопасность, защиту жизни и&nbsp;здоровья клиента</p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="about" id="about">
+
+  <div class="about__side">
+    <p class="section-label">[ О компании ]</p>
+    <p class="about__intro">Наша компания обладает большим опытом и&nbsp;постоянно развивается, внедряя современные технологии в&nbsp;сферу безопасности</p>
+    <div class="about__stat">
+      <p class="about__num">10</p>
+      <p class="about__cap about__cap--narrow">Года в&nbsp;сфере охраны и&nbsp;безопасности</p>
+    </div>
+  </div>
+
+  <div class="about__main">
+    <div class="about__lead">
+      <h2 class="about__title">ТОО&nbsp;«Кайрат Секьюрити» —— надежный партнер в&nbsp;сфере охранных услуг с&nbsp;2016 года</h2>
+      <p class="about__desc">Благодаря команде профессионалов и&nbsp;современному высокотехнологичному оборудованию, мы&nbsp;обеспечиваем надежную охрану как частных лиц и&nbsp;их&nbsp;собственности, так и&nbsp;организаций разного уровня</p>
+    </div>
+
+    <div class="about__certs">
+      <p class="about__cert">Свидетельство «Лидер отрасли 2019» <span>+</span></p>
+      <p class="about__cert">Сертификат по&nbsp;БиОТ <span>+</span></p>
+      <p class="about__cert">Лицензия на&nbsp;осуществление частной охранной деятельности <span>+</span></p>
+    </div>
+
+    <div class="about__stats">
+      <div class="about__stat">
+        <p class="about__num">24/7</p>
+        <p class="about__cap">Круглосуточный мониторинг и&nbsp;техническая поддержка</p>
+      </div>
+      <div class="about__stat">
+        <p class="about__num">&gt;34</p>
+        <p class="about__cap">Круглосуточный мониторинг и&nbsp;техническая поддержка</p>
+      </div>
+      <div class="about__stat">
+        <p class="about__num">&gt;43</p>
+        <p class="about__cap">Систем безопасности устанавливаем ежемесячно</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="geography" id="geography">
+
+  <img class="geography__map" src="assets/geography-map.png" alt="">
+
+  <p class="section-label geography__label">[ География ]</p>
+  <h2 class="geography__title">Работаем по&nbsp;всему Казахстану</h2>
+
+  <div class="geography__stats">
+    <div class="geography__stat">
+      <p class="geography__value">98%</p>
+      <p class="geography__caption geography__caption--wide">Договоров продлеваются из&nbsp;года в&nbsp;год</p>
+    </div>
+    <div class="geography__stat">
+      <p class="geography__value">&gt; 132</p>
+      <p class="geography__caption">Объектов под охраной</p>
+    </div>
+    <div class="geography__stat">
+      <p class="geography__value">&gt; 107</p>
+      <p class="geography__caption">Краж предотвращено</p>
+    </div>
+    <div class="geography__stat">
+      <p class="geography__value">&gt; 8</p>
+      <p class="geography__caption">Регионов присутствия</p>
+    </div>
+  </div>
+
+</section>
+
+<section class="request" id="request">
+
+  <div class="request__card">
+    <div class="request__content">
+      <div class="request__head">
+        <p class="section-label">[ Контакты ]</p>
+        <h2 class="request__title">Обсудим вашу безопасность?</h2>
+      </div>
+      <p class="request__text">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
+    </div>
+
+    <form class="request__form" action="#" method="post">
+      <div class="request__fields">
+        <input class="request__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
+        <input class="request__field" type="tel" name="phone" placeholder="+7(777)5587434" autocomplete="tel">
+        <label class="request__agree">
+          <input class="request__checkbox" type="checkbox" name="privacy" required>
+          <span>Я согласен с&nbsp;Политикой обработки персональных данных</span>
+        </label>
+      </div>
+
+      <button class="request__submit" type="submit">
+        Оставить заявку
+        <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+</section>
+
+<section class="clients" id="clients">
+
+  <img class="clients__bg" src="assets/clients-bg.png" alt="">
+
+  <div class="clients__inner">
+    <p class="section-label clients__label">[ Клиенты ]</p>
+    <h2 class="clients__title">Нам доверяют свою безопасность</h2>
+
+    <div class="clients__intro">
+      <p class="clients__text">Лидеры отрасли&nbsp;— наши постоянные заказчики. Вы&nbsp;можете быть уверены в&nbsp;нашем профессионализме</p>
+      <a class="clients__cta" href="#contacts">
+        Оставить заявку
+        <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="clients__logos" aria-label="Клиенты Kairat Security">
+      <div class="clients__logo-card clients__logo-card--nomad">
+        <img class="clients__logo clients__logo--nomad" src="assets/client-logo-nomadcar.png" alt="Nomadcar">
+      </div>
+      <div class="clients__logo-card clients__logo-card--sultan">
+        <img class="clients__logo clients__logo--sultan" src="assets/client-logo-sultan.png" alt="Sultan">
+      </div>
+      <div class="clients__logo-card clients__logo-card--round">
+        <img class="clients__logo clients__logo--round" src="assets/client-logo-round.png" alt="Клиент Kairat Security">
+      </div>
+      <div class="clients__logo-card clients__logo-card--luxcar">
+        <img class="clients__logo clients__logo--luxcar" src="assets/client-logo-luxcar.png" alt="Lux Car">
+      </div>
+      <div class="clients__logo-card clients__logo-card--sinomost">
+        <img class="clients__logo clients__logo--sinomost" src="assets/client-logo-sinomost.png" alt="Sinomost">
+      </div>
+      <div class="clients__logo-card clients__logo-card--xcmg">
+        <img class="clients__logo clients__logo--xcmg" src="assets/client-logo-xcmg.png" alt="XCMG">
+      </div>
+      <div class="clients__logo-card clients__logo-card--samruk">
+        <img class="clients__logo clients__logo--samruk" src="assets/client-logo-samruk.png" alt="Samruk Kazyna">
+      </div>
+      <div class="clients__logo-card clients__logo-card--ktz">
+        <img class="clients__logo clients__logo--ktz" src="assets/client-logo-ktz.png" alt="KTZ Express">
+      </div>
+      <div class="clients__logo-card clients__logo-card--damu">
+        <img class="clients__logo clients__logo--damu" src="assets/client-logo-damu.png" alt="Damu School">
+      </div>
+      <div class="clients__logo-card clients__logo-card--kep">
+        <img class="clients__logo clients__logo--kep" src="assets/client-logo-kep.png" alt="KEP">
+      </div>
+    </div>
+
+    <p class="section-label clients__letters-label">[ Благодарственные письма ]</p>
+    <h3 class="clients__letters-title">Благодарственные письма</h3>
+
+    <div class="clients__letters">
+      <img class="clients__letter" src="assets/client-letter-1.png" alt="Благодарственное письмо клиента">
+      <img class="clients__letter" src="assets/client-letter-2.png" alt="Благодарственное письмо клиента">
+      <img class="clients__letter" src="assets/client-letter-3.png" alt="Благодарственное письмо клиента">
+    </div>
+  </div>
+
+</section>
+
+<section class="final-cta" id="cta">
+
+  <div class="final-cta__inner">
+    <h2 class="final-cta__title">Обсудим наше сотрудничество?</h2>
+
+    <span class="final-cta__line final-cta__line--top"></span>
+    <span class="final-cta__line final-cta__line--center"></span>
+    <span class="final-cta__line final-cta__line--right-top"></span>
+    <span class="final-cta__line final-cta__line--right-bottom"></span>
+    <span class="final-cta__line final-cta__line--logo-left"></span>
+    <span class="final-cta__line final-cta__line--logo-right"></span>
+
+    <div class="final-cta__content">
+      <p class="final-cta__text">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
+
+      <form class="final-cta__form" action="#" method="post">
+        <div class="final-cta__fields">
+          <input class="final-cta__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
+          <input class="final-cta__field" type="tel" name="phone" placeholder="+7(777)5587434" autocomplete="tel">
+        </div>
+
+        <label class="final-cta__agree">
+          <input class="final-cta__checkbox" type="checkbox" name="privacy" required>
+          <span>Я согласен с&nbsp;Политикой обработки персональных данных</span>
+        </label>
+
+        <button class="final-cta__submit" type="submit">
+          Оставить заявку
+          <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="final-cta__wordmark" aria-hidden="true">
+      <img src="assets/wordmark.svg" alt="">
+    </div>
+  </div>
+
+  <p class="final-cta__agency" aria-hidden="true">Охранное агентство</p>
+
+</section>
+
+<script>
+  const burger = document.querySelector(".burger");
+  const menuLinks = document.querySelectorAll(".menu a");
+
+  burger.addEventListener("click", () => {
+    const open = document.body.classList.toggle("nav-open");
+    burger.setAttribute("aria-expanded", open);
+    burger.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  });
+
+  menuLinks.forEach(link =>
+    link.addEventListener("click", () => {
+      document.body.classList.remove("nav-open");
+      burger.setAttribute("aria-expanded", "false");
+    })
+  );
+</script>
+
+</body>
+</html>
