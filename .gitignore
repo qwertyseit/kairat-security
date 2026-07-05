@@ -6,3 +6,10 @@ desktop.ini
 # editor / tooling
 *.log
 node_modules/
+
+# dev-only — не публикуем (остаются локально)
+CLAUDE.md
+AGENTS.md
+styles.css
+screenshot/
+.claude/
