@@ -2419,6 +2419,67 @@
   const countryName = leadForm.querySelector("[data-country-name]");
   let leadLastFocus = null;
 
+  const initSmoothPageScroll = () => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    if (reduceMotion.matches || coarsePointer.matches) return;
+
+    let currentY = window.scrollY;
+    let targetY = window.scrollY;
+    let frame = null;
+
+    const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
+    const clamp = value => Math.max(0, Math.min(value, maxScroll()));
+
+    const hasScrollableParent = target => {
+      let node = target instanceof Element ? target : target?.parentElement;
+      while (node && node !== document.body && node !== document.documentElement) {
+        const style = window.getComputedStyle(node);
+        const overflowY = style.overflowY;
+        if ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight) {
+          return true;
+        }
+        node = node.parentElement;
+      }
+      return false;
+    };
+
+    const step = () => {
+      currentY += (targetY - currentY) * 0.14;
+      if (Math.abs(targetY - currentY) < 0.5) {
+        currentY = targetY;
+        frame = null;
+      } else {
+        frame = requestAnimationFrame(step);
+      }
+      window.scrollTo({ top: currentY, behavior: "auto" });
+    };
+
+    window.addEventListener("wheel", event => {
+      if (event.ctrlKey || document.body.classList.contains("modal-open") || hasScrollableParent(event.target)) {
+        currentY = window.scrollY;
+        targetY = currentY;
+        return;
+      }
+
+      event.preventDefault();
+      if (!frame) {
+        currentY = window.scrollY;
+        targetY = currentY;
+      }
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      targetY = clamp(targetY + event.deltaY * unit);
+      if (!frame) frame = requestAnimationFrame(step);
+    }, { passive: false });
+
+    window.addEventListener("resize", () => {
+      targetY = clamp(targetY);
+      currentY = clamp(window.scrollY);
+    });
+  };
+
+  initSmoothPageScroll();
+
   burger.addEventListener("click", () => {
     const open = document.body.classList.toggle("nav-open");
     burger.setAttribute("aria-expanded", open);
