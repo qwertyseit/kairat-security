@@ -1620,6 +1620,280 @@
     .contacts__tick--c { display: none; }
     .contacts__col { padding-left: 0; }
   }
+  /* ── Попап заявки ───────────────────────────────────────── */
+  body.modal-open {
+    overflow: hidden;
+  }
+
+  .lead-modal[hidden] {
+    display: none;
+  }
+  .lead-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 24px var(--pad-side) 12px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(9px);
+  }
+  .lead-modal__close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .lead-modal__close::before,
+  .lead-modal__close::after {
+    content: "";
+    position: absolute;
+    top: 21px;
+    left: 5px;
+    width: 34px;
+    height: 2px;
+    background: var(--white);
+  }
+  .lead-modal__close::before { transform: rotate(45deg); }
+  .lead-modal__close::after { transform: rotate(-45deg); }
+  .lead-modal__card {
+    width: min(800px, 100%);
+    height: min(714px, calc(100svh - 36px));
+    overflow-y: auto;
+    padding: 78px 74px 58px;
+    border-radius: 15px;
+    background: #1c1c1c;
+  }
+  .lead-modal__title {
+    margin-bottom: 22px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.9;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .lead-modal__text {
+    width: 470px;
+    max-width: 100%;
+    margin: 0 auto 40px;
+    font-size: 24px;
+    line-height: 1.17;
+    text-align: center;
+  }
+  .lead-modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lead-modal__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .lead-modal__field,
+  .lead-modal__select,
+  .lead-modal__phone {
+    width: 100%;
+    height: 63px;
+    border: 0;
+    border-radius: 8px;
+    background: #292929;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .lead-modal__field,
+  .lead-modal__select {
+    padding: 0 24px;
+  }
+  .lead-modal__field::placeholder {
+    color: #9a9a9a;
+    opacity: 1;
+  }
+  .lead-modal__phone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+  }
+  .lead-modal__flag {
+    width: 24px;
+    height: 16px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+  .lead-modal__flag svg {
+    width: 100%;
+    height: 100%;
+  }
+  .lead-modal__prefix {
+    flex-shrink: 0;
+    color: var(--white);
+    font-weight: 700;
+  }
+  .lead-modal__phone-input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    font: inherit;
+    outline: 0;
+  }
+  .lead-modal__phone-input::placeholder {
+    color: #9a9a9a;
+    opacity: 1;
+  }
+  .lead-modal__select {
+    appearance: none;
+    cursor: pointer;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--white) 50%),
+      linear-gradient(135deg, var(--white) 50%, transparent 50%);
+    background-position:
+      calc(100% - 31px) 29px,
+      calc(100% - 25px) 29px;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+  }
+  .lead-modal__select:invalid {
+    color: var(--white);
+  }
+  .lead-modal__agreements {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 13px 0 30px;
+  }
+  .lead-modal__agree {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #a3a3a3;
+    font-size: 14px;
+    line-height: 1.25;
+    cursor: pointer;
+  }
+  .lead-modal__checkbox {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    flex: 0 0 auto;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .lead-modal__checkbox:checked {
+    background:
+      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 6px 12px / 7px 7px no-repeat,
+      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 11px 10px / 11px 9px no-repeat;
+  }
+  .lead-modal__link {
+    color: #bdbdbd;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .lead-modal__error,
+  .lead-modal__success {
+    min-height: 18px;
+    margin-top: -12px;
+    font-size: 14px;
+    line-height: 1.25;
+  }
+  .lead-modal__error { color: #ff7a7a; }
+  .lead-modal__success { color: #b7f0c0; }
+  .lead-modal__submit {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 42px;
+    padding: 0 0 20px;
+    border: 0;
+    border-bottom: 1px solid var(--hairline);
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .lead-modal__submit svg {
+    width: 17px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+  .lead-modal__field:focus-visible,
+  .lead-modal__select:focus-visible,
+  .lead-modal__phone:focus-within,
+  .lead-modal__checkbox:focus-visible,
+  .lead-modal__submit:focus-visible,
+  .lead-modal__close:focus-visible {
+    outline: 1.5px solid var(--white);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .lead-modal {
+      align-items: flex-start;
+      padding: 20px;
+    }
+    .lead-modal__close {
+      top: 10px;
+      right: 10px;
+    }
+    .lead-modal__card {
+      height: auto;
+      max-height: calc(100svh - 40px);
+      padding: 44px 24px 34px;
+      border-radius: 12px;
+    }
+    .lead-modal__title {
+      margin-bottom: 18px;
+      font-size: clamp(42px, 14vw, 58px);
+    }
+    .lead-modal__text {
+      margin-bottom: 28px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+    .lead-modal__row {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .lead-modal__field,
+    .lead-modal__select,
+    .lead-modal__phone {
+      height: 58px;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+    .lead-modal__agreements {
+      margin-bottom: 24px;
+    }
+    .lead-modal__agree {
+      align-items: flex-start;
+      font-size: 13px;
+    }
+    .lead-modal__checkbox {
+      margin-top: -3px;
+    }
+    .lead-modal__submit {
+      min-height: 44px;
+    }
+  }
 </style>
 </head>
 <body id="top">
@@ -1980,9 +2254,76 @@
 
 </footer>
 
+<div class="lead-modal" id="lead-modal" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title" aria-hidden="true" hidden>
+  <button class="lead-modal__close" type="button" aria-label="Закрыть форму" data-lead-close></button>
+
+  <div class="lead-modal__card">
+    <h2 class="lead-modal__title" id="lead-modal-title">Оставить заявку</h2>
+    <p class="lead-modal__text">Давайте обсудим ваш проект? Оставьте ваши данные, чтобы менеджер мог связаться с&nbsp;вами</p>
+
+    <form class="lead-modal__form" action="#" method="post" novalidate>
+      <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
+
+      <div class="lead-modal__row">
+        <label class="lead-modal__phone">
+          <span class="lead-modal__flag" aria-hidden="true">
+            <svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="24" fill="#00AFCA"/>
+              <circle cx="18" cy="8" r="3.2" fill="#F7C400"/>
+              <path d="M11 16.5c2.8-1.9 4.9-2.1 7-0.4 2.1-1.7 4.2-1.5 7 0.4-3.1 0-5.4.9-7 2.9-1.6-2-3.9-2.9-7-2.9Z" fill="#F7C400"/>
+              <path d="M4 2h2v20H4V2Zm4 2h1v16H8V4Z" fill="#F7C400" opacity=".9"/>
+            </svg>
+          </span>
+          <span class="lead-modal__prefix">+7</span>
+          <input class="lead-modal__phone-input" type="tel" name="phone" placeholder="(000) 000-00-00" autocomplete="tel" aria-label="Номер телефона">
+        </label>
+
+        <input class="lead-modal__field" type="email" name="email" placeholder="Ваша почта" autocomplete="email">
+      </div>
+
+      <select class="lead-modal__select" name="contact_method" required>
+        <option value="" selected disabled>Где связаться?</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="telegram">Telegram</option>
+        <option value="email">Email</option>
+        <option value="phone">Телефон</option>
+      </select>
+
+      <div class="lead-modal__agreements">
+        <label class="lead-modal__agree">
+          <input class="lead-modal__checkbox" type="checkbox" name="privacy" required>
+          <span>Я согласен с&nbsp;<span class="lead-modal__link">политикой конфиденциальности</span></span>
+        </label>
+        <label class="lead-modal__agree">
+          <input class="lead-modal__checkbox" type="checkbox" name="personal_data" required>
+          <span>Даю согласие на&nbsp;<span class="lead-modal__link">обработку персональных данных</span></span>
+        </label>
+      </div>
+
+      <p class="lead-modal__error" aria-live="polite"></p>
+      <p class="lead-modal__success" aria-live="polite"></p>
+
+      <button class="lead-modal__submit" type="submit">
+        <span class="btn-label">Отправить заявку</span>
+        <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
 <script>
   const burger = document.querySelector(".burger");
   const menuLinks = document.querySelectorAll(".menu a");
+  const leadModal = document.querySelector("#lead-modal");
+  const leadForm = document.querySelector(".lead-modal__form");
+  const leadName = leadForm.querySelector('input[name="name"]');
+  const leadPhone = leadForm.querySelector('input[name="phone"]');
+  const leadEmail = leadForm.querySelector('input[name="email"]');
+  const leadError = leadForm.querySelector(".lead-modal__error");
+  const leadSuccess = leadForm.querySelector(".lead-modal__success");
+  let leadLastFocus = null;
 
   burger.addEventListener("click", () => {
     const open = document.body.classList.toggle("nav-open");
@@ -1996,6 +2337,91 @@
       burger.setAttribute("aria-expanded", "false");
     })
   );
+
+  const resetLeadMessages = () => {
+    leadError.textContent = "";
+    leadSuccess.textContent = "";
+    leadPhone.setCustomValidity("");
+    leadEmail.setCustomValidity("");
+  };
+
+  const openLeadModal = (sourceForm) => {
+    leadLastFocus = document.activeElement;
+    resetLeadMessages();
+
+    if (sourceForm) {
+      const sourceName = sourceForm.querySelector('input[name="name"]');
+      const sourcePhone = sourceForm.querySelector('input[name="phone"]');
+      if (sourceName?.value) leadName.value = sourceName.value;
+      if (sourcePhone?.value) leadPhone.value = sourcePhone.value.replace(/^\+7\s?/, "");
+    }
+
+    leadModal.hidden = false;
+    leadModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    leadName.focus();
+  };
+
+  const closeLeadModal = () => {
+    leadModal.hidden = true;
+    leadModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    leadLastFocus?.focus?.();
+  };
+
+  document.querySelectorAll(".cta, .clients__cta, .request__submit, .final-cta__submit").forEach(trigger => {
+    trigger.addEventListener("click", event => {
+      event.preventDefault();
+      openLeadModal(trigger.closest("form"));
+    });
+  });
+
+  document.querySelectorAll(".request__form, .final-cta__form").forEach(form => {
+    form.setAttribute("novalidate", "");
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      openLeadModal(form);
+    });
+  });
+
+  leadModal.addEventListener("click", event => {
+    if (event.target === leadModal || event.target.closest("[data-lead-close]")) {
+      closeLeadModal();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !leadModal.hidden) {
+      closeLeadModal();
+    }
+  });
+
+  [leadPhone, leadEmail].forEach(field => {
+    field.addEventListener("input", () => {
+      leadPhone.setCustomValidity("");
+      leadEmail.setCustomValidity("");
+      leadError.textContent = "";
+    });
+  });
+
+  leadForm.addEventListener("submit", event => {
+    event.preventDefault();
+    resetLeadMessages();
+
+    if (!leadPhone.value.trim() && !leadEmail.value.trim()) {
+      const message = "Укажите номер телефона или почту";
+      leadPhone.setCustomValidity(message);
+      leadEmail.setCustomValidity(message);
+      leadError.textContent = message;
+    }
+
+    if (!leadForm.reportValidity()) {
+      return;
+    }
+
+    leadSuccess.textContent = "Спасибо! Заявка заполнена. Отправку подключим к выбранному каналу связи.";
+    leadForm.reset();
+  });
 </script>
 
 </body>
