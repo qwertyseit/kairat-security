@@ -126,7 +126,7 @@
 
   /* ── Шапка ───────────────────────────────────────────────── */
   .topbar {
-    padding: 0 var(--hero-pad-x);
+    padding: 0 max(20px, calc(var(--hero-pad-x) - 15px)) 0 var(--hero-pad-x);
   }
   .topbar__inner {
     position: relative;
@@ -167,7 +167,7 @@
   .menu {
     display: flex;
     align-items: center;
-    gap: 72px;
+    gap: 88px;
   }
   .menu a {
     font-size: 14px;
@@ -225,13 +225,13 @@
     align-items: flex-end;
     justify-content: space-between;
     row-gap: 50px;
-    padding: 0 var(--hero-pad-x) 94px;
+    padding: 0 var(--hero-pad-x) 101px;
   }
 
   .hero__title {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(60px, 3.75vw, 72px);
+    font-size: clamp(60px, 4.15vw, 79px);
     line-height: 1;
     text-transform: uppercase;
     max-width: 650px;
@@ -269,9 +269,16 @@
   @media (min-width: 1600px) {
     .hero__content {
       display: grid;
-      grid-template-columns: 720px 410px;
-      column-gap: 300px;
+      grid-template-columns: 780px 410px;
+      column-gap: 240px;
       justify-content: start;
+    }
+    .hero__title {
+      max-width: 780px;
+      transform: translateY(-24px);
+    }
+    .hero__aside {
+      gap: 72px;
     }
   }
 
