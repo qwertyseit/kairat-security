@@ -1721,8 +1721,22 @@
   .lead-modal__phone {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
     padding: 0 24px;
+  }
+  .lead-modal__phone-wrap {
+    position: relative;
+    z-index: 2;
+  }
+  .lead-modal__country {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
   }
   .lead-modal__flag {
     width: 24px;
@@ -1735,6 +1749,21 @@
   .lead-modal__flag svg {
     width: 100%;
     height: 100%;
+  }
+  .lead-modal__flag--emoji {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    font-size: 18px;
+    line-height: 1;
+  }
+  .lead-modal__country-chevron {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #9a9a9a;
   }
   .lead-modal__prefix {
     flex-shrink: 0;
@@ -1753,6 +1782,59 @@
   .lead-modal__phone-input::placeholder {
     color: #9a9a9a;
     opacity: 1;
+  }
+  .lead-modal__country-list[hidden] {
+    display: none;
+  }
+  .lead-modal__country-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 5;
+    width: min(525px, calc(100vw - 40px));
+    max-height: 264px;
+    overflow-y: auto;
+    padding: 6px 0;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.32);
+  }
+  .lead-modal__country-option {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    min-height: 41px;
+    padding: 0 24px 0 14px;
+    border: 0;
+    background: transparent;
+    color: #050505;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1;
+    text-align: left;
+    cursor: pointer;
+  }
+  .lead-modal__country-option:hover,
+  .lead-modal__country-option[aria-selected="true"] {
+    background: #efefef;
+  }
+  .lead-modal__country-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lead-modal__country-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+  }
+  .lead-modal__country-emoji {
+    font-size: 18px;
+    line-height: 1;
   }
   .lead-modal__select {
     appearance: none;
@@ -1838,6 +1920,7 @@
   .lead-modal__field:focus-visible,
   .lead-modal__select:focus-visible,
   .lead-modal__phone:focus-within,
+  .lead-modal__country:focus-visible,
   .lead-modal__checkbox:focus-visible,
   .lead-modal__submit:focus-visible,
   .lead-modal__close:focus-visible {
@@ -1880,6 +1963,14 @@
       padding-right: 20px;
       padding-left: 20px;
     }
+    .lead-modal__country-list {
+      max-height: 246px;
+    }
+    .lead-modal__country-option {
+      min-height: 39px;
+      padding-right: 18px;
+      font-size: 16px;
+    }
     .lead-modal__agreements {
       margin-bottom: 24px;
     }
@@ -1892,6 +1983,11 @@
     }
     .lead-modal__submit {
       min-height: 44px;
+    }
+  }
+  @media (max-width: 480px) {
+    .lead-modal__country-list {
+      width: 100%;
     }
   }
 </style>
@@ -2265,18 +2361,38 @@
       <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
 
       <div class="lead-modal__row">
-        <label class="lead-modal__phone">
-          <span class="lead-modal__flag" aria-hidden="true">
-            <svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg">
-              <rect width="36" height="24" fill="#00AFCA"/>
-              <circle cx="18" cy="8" r="3.2" fill="#F7C400"/>
-              <path d="M11 16.5c2.8-1.9 4.9-2.1 7-0.4 2.1-1.7 4.2-1.5 7 0.4-3.1 0-5.4.9-7 2.9-1.6-2-3.9-2.9-7-2.9Z" fill="#F7C400"/>
-              <path d="M4 2h2v20H4V2Zm4 2h1v16H8V4Z" fill="#F7C400" opacity=".9"/>
-            </svg>
-          </span>
-          <span class="lead-modal__prefix">+7</span>
-          <input class="lead-modal__phone-input" type="tel" name="phone" placeholder="(000) 000-00-00" autocomplete="tel" aria-label="Номер телефона">
-        </label>
+        <div class="lead-modal__phone-wrap">
+          <div class="lead-modal__phone">
+            <button class="lead-modal__country" type="button" aria-label="Выбрать страну" aria-haspopup="listbox" aria-expanded="false">
+              <span class="lead-modal__flag lead-modal__flag--emoji" data-country-flag aria-hidden="true">🇰🇿</span>
+              <span class="lead-modal__country-chevron" aria-hidden="true"></span>
+            </button>
+            <span class="lead-modal__prefix" data-country-code>+7</span>
+            <input class="lead-modal__phone-input" type="tel" name="phone" placeholder="(000) 000-00-00" autocomplete="tel" aria-label="Номер телефона">
+            <input type="hidden" name="country" value="Kazakhstan" data-country-name>
+          </div>
+
+          <div class="lead-modal__country-list" role="listbox" aria-label="Выбор страны" hidden>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Afghanistan" data-code="+93" data-flag="🇦🇫"><span class="lead-modal__country-name">Afghanistan (افغانستان)</span><span class="lead-modal__country-meta"><span>+93</span><span class="lead-modal__country-emoji">🇦🇫</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Albania" data-code="+355" data-flag="🇦🇱"><span class="lead-modal__country-name">Albania (Shqipëri)</span><span class="lead-modal__country-meta"><span>+355</span><span class="lead-modal__country-emoji">🇦🇱</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Algeria" data-code="+213" data-flag="🇩🇿"><span class="lead-modal__country-name">Algeria (الجزائر)</span><span class="lead-modal__country-meta"><span>+213</span><span class="lead-modal__country-emoji">🇩🇿</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Andorra" data-code="+376" data-flag="🇦🇩"><span class="lead-modal__country-name">Andorra</span><span class="lead-modal__country-meta"><span>+376</span><span class="lead-modal__country-emoji">🇦🇩</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Angola" data-code="+244" data-flag="🇦🇴"><span class="lead-modal__country-name">Angola</span><span class="lead-modal__country-meta"><span>+244</span><span class="lead-modal__country-emoji">🇦🇴</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Armenia" data-code="+374" data-flag="🇦🇲"><span class="lead-modal__country-name">Armenia (Հայաստան)</span><span class="lead-modal__country-meta"><span>+374</span><span class="lead-modal__country-emoji">🇦🇲</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Azerbaijan" data-code="+994" data-flag="🇦🇿"><span class="lead-modal__country-name">Azerbaijan (Azərbaycan)</span><span class="lead-modal__country-meta"><span>+994</span><span class="lead-modal__country-emoji">🇦🇿</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Belarus" data-code="+375" data-flag="🇧🇾"><span class="lead-modal__country-name">Belarus (Беларусь)</span><span class="lead-modal__country-meta"><span>+375</span><span class="lead-modal__country-emoji">🇧🇾</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="China" data-code="+86" data-flag="🇨🇳"><span class="lead-modal__country-name">China (中国)</span><span class="lead-modal__country-meta"><span>+86</span><span class="lead-modal__country-emoji">🇨🇳</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Georgia" data-code="+995" data-flag="🇬🇪"><span class="lead-modal__country-name">Georgia (საქართველო)</span><span class="lead-modal__country-meta"><span>+995</span><span class="lead-modal__country-emoji">🇬🇪</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Kazakhstan" data-code="+7" data-flag="🇰🇿" aria-selected="true"><span class="lead-modal__country-name">Kazakhstan (Қазақстан)</span><span class="lead-modal__country-meta"><span>+7</span><span class="lead-modal__country-emoji">🇰🇿</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Kyrgyzstan" data-code="+996" data-flag="🇰🇬"><span class="lead-modal__country-name">Kyrgyzstan (Кыргызстан)</span><span class="lead-modal__country-meta"><span>+996</span><span class="lead-modal__country-emoji">🇰🇬</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Russia" data-code="+7" data-flag="🇷🇺"><span class="lead-modal__country-name">Russia (Россия)</span><span class="lead-modal__country-meta"><span>+7</span><span class="lead-modal__country-emoji">🇷🇺</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Tajikistan" data-code="+992" data-flag="🇹🇯"><span class="lead-modal__country-name">Tajikistan (Тоҷикистон)</span><span class="lead-modal__country-meta"><span>+992</span><span class="lead-modal__country-emoji">🇹🇯</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Turkey" data-code="+90" data-flag="🇹🇷"><span class="lead-modal__country-name">Turkey (Türkiye)</span><span class="lead-modal__country-meta"><span>+90</span><span class="lead-modal__country-emoji">🇹🇷</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Turkmenistan" data-code="+993" data-flag="🇹🇲"><span class="lead-modal__country-name">Turkmenistan</span><span class="lead-modal__country-meta"><span>+993</span><span class="lead-modal__country-emoji">🇹🇲</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="United Arab Emirates" data-code="+971" data-flag="🇦🇪"><span class="lead-modal__country-name">United Arab Emirates</span><span class="lead-modal__country-meta"><span>+971</span><span class="lead-modal__country-emoji">🇦🇪</span></span></button>
+            <button class="lead-modal__country-option" type="button" role="option" data-name="Uzbekistan" data-code="+998" data-flag="🇺🇿"><span class="lead-modal__country-name">Uzbekistan (Oʻzbekiston)</span><span class="lead-modal__country-meta"><span>+998</span><span class="lead-modal__country-emoji">🇺🇿</span></span></button>
+          </div>
+        </div>
 
         <input class="lead-modal__field" type="email" name="email" placeholder="Ваша почта" autocomplete="email">
       </div>
@@ -2323,6 +2439,12 @@
   const leadEmail = leadForm.querySelector('input[name="email"]');
   const leadError = leadForm.querySelector(".lead-modal__error");
   const leadSuccess = leadForm.querySelector(".lead-modal__success");
+  const countryToggle = leadForm.querySelector(".lead-modal__country");
+  const countryList = leadForm.querySelector(".lead-modal__country-list");
+  const countryOptions = leadForm.querySelectorAll(".lead-modal__country-option");
+  const countryFlag = leadForm.querySelector("[data-country-flag]");
+  const countryCode = leadForm.querySelector("[data-country-code]");
+  const countryName = leadForm.querySelector("[data-country-name]");
   let leadLastFocus = null;
 
   burger.addEventListener("click", () => {
@@ -2345,9 +2467,29 @@
     leadEmail.setCustomValidity("");
   };
 
+  const closeCountryList = () => {
+    countryList.hidden = true;
+    countryToggle.setAttribute("aria-expanded", "false");
+  };
+
+  const openCountryList = () => {
+    countryList.hidden = false;
+    countryToggle.setAttribute("aria-expanded", "true");
+  };
+
+  const selectCountry = (option) => {
+    countryOptions.forEach(item => item.setAttribute("aria-selected", item === option ? "true" : "false"));
+    countryFlag.textContent = option.dataset.flag;
+    countryCode.textContent = option.dataset.code;
+    countryName.value = option.dataset.name;
+    closeCountryList();
+    leadPhone.focus();
+  };
+
   const openLeadModal = (sourceForm) => {
     leadLastFocus = document.activeElement;
     resetLeadMessages();
+    closeCountryList();
 
     if (sourceForm) {
       const sourceName = sourceForm.querySelector('input[name="name"]');
@@ -2363,6 +2505,7 @@
   };
 
   const closeLeadModal = () => {
+    closeCountryList();
     leadModal.hidden = true;
     leadModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
@@ -2390,7 +2533,30 @@
     }
   });
 
+  countryToggle.addEventListener("click", event => {
+    event.stopPropagation();
+    countryList.hidden ? openCountryList() : closeCountryList();
+  });
+
+  countryOptions.forEach(option => {
+    option.addEventListener("click", event => {
+      event.stopPropagation();
+      selectCountry(option);
+    });
+  });
+
+  document.addEventListener("click", event => {
+    if (!countryList.hidden && !event.target.closest(".lead-modal__phone-wrap")) {
+      closeCountryList();
+    }
+  });
+
   document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !countryList.hidden) {
+      closeCountryList();
+      countryToggle.focus();
+      return;
+    }
     if (event.key === "Escape" && !leadModal.hidden) {
       closeLeadModal();
     }
@@ -2421,6 +2587,10 @@
 
     leadSuccess.textContent = "Спасибо! Заявка заполнена. Отправку подключим к выбранному каналу связи.";
     leadForm.reset();
+    countryOptions.forEach(item => item.setAttribute("aria-selected", item.dataset.name === "Kazakhstan" ? "true" : "false"));
+    countryFlag.textContent = "🇰🇿";
+    countryCode.textContent = "+7";
+    countryName.value = "Kazakhstan";
   });
 </script>
 
