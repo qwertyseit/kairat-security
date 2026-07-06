@@ -105,6 +105,7 @@
 
   /* ── Хиро ────────────────────────────────────────────────── */
   .hero {
+    --hero-pad-x: clamp(60px, 4.7vw, 90px);
     position: relative;
     min-height: 100svh;
     display: flex;
@@ -125,40 +126,52 @@
 
   /* ── Шапка ───────────────────────────────────────────────── */
   .topbar {
-    padding: 0 var(--pad-side);
+    padding: 0 var(--hero-pad-x);
   }
   .topbar__inner {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 0;
+    min-height: 98px;
+    padding: 0;
     border-bottom: 1px solid var(--hairline);
+  }
+  .topbar__inner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 34%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.18);
+    pointer-events: none;
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
   }
   .logo__mark {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 24px;
     object-fit: cover;
   }
   .logo__word {
-    width: 92px;
-    height: 26px;
+    width: 152px;
+    height: 43px;
   }
 
   .menu {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 72px;
   }
   .menu a {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 700;
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -166,7 +179,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 10px 0; /* тап-таргет */
+    padding: 10px 0;
     transition: opacity 0.2s;
   }
   .menu a:hover { opacity: 0.7; }
@@ -212,29 +225,29 @@
     align-items: flex-end;
     justify-content: space-between;
     row-gap: 50px;
-    padding: 0 182px 60px var(--pad-side);
+    padding: 0 var(--hero-pad-x) 94px;
   }
 
   .hero__title {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: 60px;
+    font-size: clamp(60px, 3.75vw, 72px);
     line-height: 1;
     text-transform: uppercase;
-    max-width: 515px;
+    max-width: 650px;
   }
 
   .hero__aside {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 52px;
-    width: 328px;
+    gap: 60px;
+    width: 410px;
   }
   .hero__text {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.2;
     width: 100%;
   }
 
@@ -251,28 +264,59 @@
     text-transform: uppercase;
     transition: opacity 0.2s;
   }
-  .cta:hover { opacity: 0.7; }
   .cta svg { width: 17px; height: 14px; flex-shrink: 0; }
 
-  /* ── Анимация стрелки на кнопках «Оставить заявку» ────────────
-     как на референсе (russpeceng.ru, Tilda hover): при наведении
-     стрелка влетает по диагонали снизу-слева, проявляясь, за 300ms */
-  @keyframes cta-arrow-in {
-    from { transform: translate(-18px, 18px); opacity: 0; }
-    to   { transform: translate(0, 0);        opacity: 1; }
+  @media (min-width: 1600px) {
+    .hero__content {
+      display: grid;
+      grid-template-columns: 720px 410px;
+      column-gap: 300px;
+      justify-content: start;
+    }
   }
-  .cta:hover svg,
-  .request__submit:hover svg,
-  .clients__cta:hover svg,
-  .final-cta__submit:hover svg {
-    animation: cta-arrow-in 0.3s ease-in-out;
+
+  /* ── Ховер кнопок «Оставить заявку» (по референсу russpeceng.ru) ──
+     текст едет вправо, стрелка влево, сзади снизу выезжает подложка */
+  .cta, .request__submit, .clients__cta, .final-cta__submit {
+    position: relative;
+    isolation: isolate;
+  }
+  /* подложка: растёт по высоте от нижнего края (не режет фокус-обводку) */
+  .cta::before, .request__submit::before,
+  .clients__cta::before, .final-cta__submit::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.1);
+    transition: height 0.35s cubic-bezier(0.33, 0, 0.2, 1);
+  }
+  .cta:hover::before, .request__submit:hover::before,
+  .clients__cta:hover::before, .final-cta__submit:hover::before {
+    height: 100%;
+  }
+  .btn-label,
+  .cta svg, .request__submit svg,
+  .clients__cta svg, .final-cta__submit svg {
+    transition: transform 0.3s ease;
+  }
+  .cta:hover .btn-label, .request__submit:hover .btn-label,
+  .clients__cta:hover .btn-label, .final-cta__submit:hover .btn-label {
+    transform: translateX(6px);
+  }
+  .cta:hover svg, .request__submit:hover svg,
+  .clients__cta:hover svg, .final-cta__submit:hover svg {
+    transform: translateX(-6px);
   }
   @media (prefers-reduced-motion: reduce) {
-    .cta:hover svg,
-    .request__submit:hover svg,
-    .clients__cta:hover svg,
-    .final-cta__submit:hover svg {
-      animation: none;
+    .cta::before, .request__submit::before,
+    .clients__cta::before, .final-cta__submit::before,
+    .btn-label, .cta svg, .request__submit svg,
+    .clients__cta svg, .final-cta__submit svg {
+      transition: none;
     }
   }
 
@@ -646,7 +690,6 @@
     cursor: pointer;
     transition: opacity 0.2s;
   }
-  .request__submit:hover { opacity: 0.7; }
   .request__submit svg {
     width: 13px;
     height: 11px;
@@ -736,7 +779,6 @@
     text-transform: uppercase;
     transition: opacity 0.2s;
   }
-  .clients__cta:hover { opacity: 0.7; }
   .clients__cta:focus-visible {
     outline: 1.5px solid var(--white);
     outline-offset: 3px;
@@ -970,7 +1012,6 @@
     cursor: pointer;
     transition: opacity 0.2s;
   }
-  .final-cta__submit:hover { opacity: 0.7; }
   .final-cta__submit svg {
     width: 13px;
     height: 11px;
@@ -1231,6 +1272,25 @@
   @media (max-width: 768px) {
     :root { --pad-side: 20px; }
 
+    .hero { --hero-pad-x: var(--pad-side); }
+    .topbar__inner {
+      min-height: 61px;
+    }
+    .topbar__inner::before {
+      display: none;
+    }
+    .logo {
+      gap: 10px;
+    }
+    .logo__mark {
+      width: 36px;
+      height: 36px;
+    }
+    .logo__word {
+      width: 92px;
+      height: 26px;
+    }
+
     .menu {
       position: fixed;
       inset: 0;
@@ -1255,6 +1315,7 @@
     .burger { display: flex; }
 
     .hero__content {
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
       row-gap: 40px;
@@ -1268,6 +1329,10 @@
       width: 100%;
       align-items: flex-start;
       gap: 36px;
+    }
+    .hero__text {
+      font-size: 16px;
+      line-height: 1.25;
     }
 
     .services { padding: 60px var(--pad-side); }
@@ -1585,7 +1650,7 @@
       <p class="hero__text">Охранное агентство «Kairat Security» обеспечивает круглосуточную охрану объектов и&nbsp;персонала любой сложности</p>
 
       <a class="cta" href="#contacts">
-        Оставить заявку
+        <span class="btn-label">Оставить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
         </svg>
@@ -1747,7 +1812,7 @@
       </div>
 
       <button class="request__submit" type="submit">
-        Оставить заявку
+        <span class="btn-label">Оставить заявку</span>
         <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
         </svg>
@@ -1768,7 +1833,7 @@
     <div class="clients__intro">
       <p class="clients__text">Лидеры отрасли&nbsp;— наши постоянные заказчики. Вы&nbsp;можете быть уверены в&nbsp;нашем профессионализме</p>
       <a class="clients__cta" href="#contacts">
-        Оставить заявку
+        <span class="btn-label">Оставить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
         </svg>
@@ -1847,7 +1912,7 @@
         </label>
 
         <button class="final-cta__submit" type="submit">
-          Оставить заявку
+          <span class="btn-label">Оставить заявку</span>
           <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
           </svg>
