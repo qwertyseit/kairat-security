@@ -1056,20 +1056,6 @@
     width: 100%;
     height: 100%;
   }
-  .final-cta__agency {
-    position: absolute;
-    left: 30px;
-    bottom: -30px;
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 210px;
-    line-height: 0.85;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: var(--white);
-    pointer-events: none;
-  }
-
   /* ── Контакты (футер) ─────────────────────────────────────── */
   .contacts {
     position: relative;
@@ -1159,19 +1145,6 @@
   }
   .contacts__vacancy > span { font-size: 20px; }
   .contacts__vacancy:hover { opacity: .7; }
-
-  /* гигантская надпись, обрезается справа краем секции */
-  .contacts__agency {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: min(240px, 20vw);
-    line-height: 0.9;
-    text-transform: uppercase;
-    color: var(--white);
-    white-space: nowrap;
-    pointer-events: none;
-    margin-bottom: -0.1em;
-  }
 
   @media (max-width: 1100px) and (min-width: 769px) {
     .request__card {
@@ -1281,12 +1254,6 @@
       width: 100%;
       height: auto;
       aspect-ratio: 380 / 107;
-    }
-    .final-cta__agency {
-      position: static;
-      grid-column: 1 / -1;
-      margin: 42px 0 -50px -30px;
-      font-size: clamp(96px, 15vw, 150px);
     }
   }
 
@@ -1600,14 +1567,6 @@
       margin-top: 64px;
       aspect-ratio: 380 / 107;
     }
-    .final-cta__agency {
-      position: static;
-      width: max-content;
-      margin: 56px 0 -16px -20px;
-      font-size: clamp(78px, 24vw, 118px);
-      line-height: 0.85;
-    }
-
     .contacts {
       padding: 60px var(--pad-side) 0;
     }
@@ -2360,8 +2319,6 @@
       </a>
     </div>
   </div>
-
-  <p class="contacts__agency" aria-hidden="true">Охранное агентство «Kairat&nbsp;Security»</p>
 
 </footer>
 
