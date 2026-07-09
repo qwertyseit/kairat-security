@@ -2422,15 +2422,23 @@
   const initSmoothPageScroll = () => {
     let currentY = window.scrollY;
     let targetY = window.scrollY;
+    let startY = currentY;
+    let startTime = 0;
+    let duration = 900;
     let frame = null;
-    const ease = 0.085;
-    const wheelStrength = 1.2;
+    const wheelStrength = 1.05;
+    const minDuration = 780;
+    const maxDuration = 1550;
 
     const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
     const clamp = value => Math.max(0, Math.min(value, maxScroll()));
+    const easeInOutCubic = progress => progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
     const syncToNative = () => {
       currentY = window.scrollY;
       targetY = currentY;
+      startY = currentY;
     };
     const stop = () => {
       if (frame) cancelAnimationFrame(frame);
@@ -2451,20 +2459,27 @@
       return false;
     };
 
-    const step = () => {
-      currentY += (targetY - currentY) * ease;
-      if (Math.abs(targetY - currentY) < 0.35) {
+    const step = timestamp => {
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      currentY = startY + (targetY - startY) * easeInOutCubic(progress);
+      window.scrollTo({ top: currentY, behavior: "auto" });
+
+      if (progress >= 1) {
         currentY = targetY;
+        startY = targetY;
         frame = null;
       } else {
         frame = requestAnimationFrame(step);
       }
-      window.scrollTo({ top: currentY, behavior: "auto" });
     };
 
     const scrollToTarget = nextY => {
-      if (!frame) currentY = window.scrollY;
+      currentY = window.scrollY;
+      startY = currentY;
       targetY = clamp(nextY);
+      const distance = Math.abs(targetY - startY);
+      duration = Math.max(minDuration, Math.min(maxDuration, 560 + distance * 0.46));
+      startTime = performance.now();
       if (!frame) frame = requestAnimationFrame(step);
     };
 
