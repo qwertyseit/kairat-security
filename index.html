@@ -91,6 +91,7 @@
     --line-dim: rgba(255, 255, 255, 0.1);  /* разделители строк списка */
     --label: #585858;                      /* лейблы секций [ ... ] */
     --overlay: rgba(0, 0, 0, 0.4);
+    --noise-opacity: 0.18;
     --pad-side: 60px;
     --content-max: 1080px; /* ширина контента макета (1200 − 2×60) */
     /* горизонтальный отступ секций: не меньше --pad-side, на широких экранах
@@ -110,6 +111,17 @@
     font-family: var(--font-body);
     color: var(--white);
     background: #0a0a0a;
+  }
+
+  .site-noise {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    pointer-events: none;
+    background-image: url("assets/noise.gif");
+    background-repeat: repeat;
+    background-size: auto;
+    opacity: var(--noise-opacity);
   }
 
   img { display: block; }
@@ -1967,6 +1979,7 @@
 </style>
 </head>
 <body id="top">
+<div class="site-noise" aria-hidden="true"></div>
 
 <section class="hero">
 
