@@ -91,7 +91,7 @@
     --line-dim: rgba(255, 255, 255, 0.1);  /* разделители строк списка */
     --label: #585858;                      /* лейблы секций [ ... ] */
     --overlay: rgba(0, 0, 0, 0.4);
-    --noise-opacity: 0.07;
+    --noise-opacity: 0.05;
     --pad-side: 60px;
     --content-max: 1080px; /* ширина контента макета (1200 − 2×60) */
     /* горизонтальный отступ секций: не меньше --pad-side, на широких экранах
@@ -122,6 +122,41 @@
     background-repeat: repeat;
     background-size: auto;
     opacity: var(--noise-opacity);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    html,
+    html *,
+    body,
+    body * {
+      cursor: none;
+    }
+
+    .cursor-dot,
+    .cursor-dot-outline {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .cursor-dot {
+      z-index: 99999999;
+      width: 8px;
+      height: 8px;
+      background: rgba(235, 54, 54, 0.88);
+    }
+
+    .cursor-dot-outline {
+      z-index: 99999998;
+      width: 36px;
+      height: 36px;
+      background: rgba(235, 54, 54, 0.22);
+    }
   }
 
   img { display: block; }
@@ -1980,6 +2015,8 @@
 </head>
 <body id="top">
 <div class="site-noise" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-dot-outline" aria-hidden="true"></div>
 
 <section class="hero">
 
@@ -2591,6 +2628,62 @@
     countryCode.textContent = "+7";
     countryName.value = "Kazakhstan";
   });
+</script>
+
+<script>
+  (() => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    const dot = document.querySelector(".cursor-dot");
+    const outline = document.querySelector(".cursor-dot-outline");
+    const interactiveElements = document.querySelectorAll("a, button, select, label, input, textarea");
+    const cursor = {
+      delay: 8,
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      targetX: window.innerWidth / 2,
+      targetY: window.innerHeight / 2,
+      enlarged: false
+    };
+
+    const setSize = enlarged => {
+      cursor.enlarged = enlarged;
+      dot.style.transform = `translate(-50%, -50%) scale(${enlarged ? 4 : 1})`;
+      outline.style.transform = `translate(-50%, -50%) scale(${enlarged ? 0 : 1})`;
+    };
+
+    const setVisible = visible => {
+      dot.style.opacity = visible ? "1" : "0";
+      outline.style.opacity = visible ? "1" : "0";
+    };
+
+    interactiveElements.forEach(element => {
+      element.addEventListener("mouseenter", () => setSize(true));
+      element.addEventListener("mouseleave", () => setSize(false));
+    });
+
+    window.addEventListener("mousemove", event => {
+      cursor.targetX = event.clientX;
+      cursor.targetY = event.clientY;
+      dot.style.left = `${cursor.targetX}px`;
+      dot.style.top = `${cursor.targetY}px`;
+      setVisible(true);
+    });
+    window.addEventListener("mousedown", () => setSize(true));
+    window.addEventListener("mouseup", () => setSize(false));
+    window.addEventListener("mouseleave", () => setVisible(false));
+    window.addEventListener("mouseenter", () => setVisible(true));
+
+    const animate = () => {
+      cursor.x += (cursor.targetX - cursor.x) / cursor.delay;
+      cursor.y += (cursor.targetY - cursor.y) / cursor.delay;
+      outline.style.left = `${cursor.x}px`;
+      outline.style.top = `${cursor.y}px`;
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  })();
 </script>
 
 </body>
