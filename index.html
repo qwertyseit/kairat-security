@@ -4,18 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kairat Security — охрана объектов в Алматы</title>
+<meta name="description" content="Охранное агентство «Kairat Security» в Алматы с 2016 года. Физическая и пультовая охрана, системы безопасности, сопровождение грузов и услуги телохранителей.">
+<link rel="canonical" href="https://kairatsecurity.kz/">
+<link rel="icon" href="assets/logo.webp" type="image/webp">
+<meta property="og:title" content="Kairat Security — охрана объектов в Алматы">
+<meta property="og:description" content="Охранное агентство «Kairat Security» в Алматы с 2016 года. Физическая и пультовая охрана, системы безопасности, сопровождение грузов и услуги телохранителей.">
+<meta property="og:url" content="https://kairatsecurity.kz/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://kairatsecurity.kz/assets/hero.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="800">
 
 <!--
   ═══════════════════════════════════════════════════════════════
   АССЕТЫ: все картинки — локально в assets/ (перенесены с временных ссылок
-  Figma MCP перед деплоем): хиро hero.jpg, логотип logo.png + wordmark.svg,
-  услуги service-*.png, карта geography-map.png, клиенты clients-bg.png /
-  client-logo-*.png / client-letter-*.png.
+  Figma MCP перед деплоем): хиро hero.webp, логотип logo.webp + wordmark.svg,
+  услуги service-*.webp, карта geography-map.png, клиенты clients-bg.webp /
+  client-logo-*.png / client-letter-*.webp.
 
-  ШРИФТЫ: в макете Druk Cyr (заголовок), SF Pro Display (текст),
-  Bebas Neue Pro (крупные цифры-показатели). Файлы шрифтов — в fonts/.
-  Если Bebas Neue Pro появится — положи fonts/BebasNeuePro-Bold.woff2 (и т.д.).
-  Пока подгружаются близкие бесплатные: Oswald + Inter + Bebas Neue (кириллица есть).
+  ШРИФТЫ: Druk Cyr (заголовки) и SF Pro Display (текст) — локально в fonts/.
+  Файла Bebas Neue Pro из макета нет; для крупных цифр используется Bebas Neue.
+  Google Fonts загружает Bebas Neue и PT Mono, а также Oswald и Inter как фолбэки.
+  @font-face для Bebas Neue Pro добавлять только вместе с реальным файлом шрифта.
   ═══════════════════════════════════════════════════════════════
 -->
 
@@ -71,15 +82,6 @@
     font-weight: 700;
     font-display: swap;
   }
-  @font-face {
-    font-family: "Bebas Neue Pro";
-    src: url("fonts/BebasNeuePro-Bold.woff2") format("woff2"),
-         url("fonts/BebasNeuePro-Bold.woff") format("woff"),
-         url("fonts/BebasNeuePro-Bold.ttf") format("truetype");
-    font-weight: 700;
-    font-display: swap;
-  }
-
   :root {
     --font-display: "Druk Cyr", "Oswald", sans-serif;
     --font-body: "SF Pro Display", "Inter", -apple-system, sans-serif;
@@ -91,7 +93,6 @@
     --line-dim: rgba(255, 255, 255, 0.1);  /* разделители строк списка */
     --label: #585858;                      /* лейблы секций [ ... ] */
     --overlay: rgba(0, 0, 0, 0.4);
-    --noise-opacity: 0.05;
     --pad-side: 60px;
     --content-max: 1080px; /* ширина контента макета (1200 − 2×60) */
     /* горизонтальный отступ секций: не меньше --pad-side, на широких экранах
@@ -102,6 +103,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
+  html.nav-scrolling { scroll-behavior: auto !important; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition: none !important; }
@@ -113,22 +115,9 @@
     background: #0a0a0a;
   }
 
-  .site-noise {
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    pointer-events: none;
-    background-image: url("assets/noise.gif");
-    background-repeat: repeat;
-    background-size: auto;
-    opacity: var(--noise-opacity);
-  }
-
   @media (hover: hover) and (pointer: fine) {
-    html,
-    html *,
-    body,
-    body * {
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
       cursor: none;
     }
 
@@ -171,7 +160,7 @@
     flex-direction: column;
     justify-content: space-between;
     isolation: isolate;
-    background-image: url("assets/hero.jpg");
+    background-image: url("assets/hero.webp");
     background-size: cover;
     background-position: center;
   }
@@ -735,11 +724,6 @@
     background: transparent;
     cursor: pointer;
   }
-  .request__checkbox:checked {
-    background:
-      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 4px 9px / 6px 6px no-repeat,
-      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 8px 8px / 9px 7px no-repeat;
-  }
   .request__submit {
     width: 100%;
     height: 26px;
@@ -1056,11 +1040,6 @@
     background: transparent;
     cursor: pointer;
   }
-  .final-cta__checkbox:checked {
-    background:
-      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 4px 9px / 6px 6px no-repeat,
-      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 8px 8px / 9px 7px no-repeat;
-  }
   .final-cta__submit {
     width: 100%;
     height: 27px;
@@ -1101,7 +1080,7 @@
   }
   .final-cta__wordmark img {
     width: 100%;
-    height: 100%;
+    height: auto;
   }
   /* ── Контакты (футер) ─────────────────────────────────────── */
   .contacts {
@@ -1641,6 +1620,190 @@
     .contacts__tick--c { display: none; }
     .contacts__col { padding-left: 0; }
   }
+  /* ── Масштабирование: телефон → планшет → десктоп ────────── */
+  :root {
+    --text-muted: #b3b3b3;
+    --section-space: clamp(56px, 8vw, 80px);
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  img { max-width: 100%; height: auto; }
+  button, input, select { font: inherit; }
+  .hero__content { padding-top: 72px; }
+  .hero__title, .services__title, .about__title,
+  .geography__title, .request__title, .clients__title,
+  .clients__letters-title, .final-cta__title { overflow-wrap: break-word; }
+  .services__lead, .services__name, .about__stat,
+  .geography__stat, .contacts__col { min-width: 0; }
+  .services__desc, .about__desc, .hero__text, .clients__text,
+  .request__text, .final-cta__text { line-height: 1.4; }
+  .about__cert { line-height: 1.3; }
+  .about__stats .about__cap { font-weight: 600; }
+  .contacts__value { min-width: 0; overflow-wrap: anywhere; line-height: 1.4; }
+  .contacts__phone, .contacts__vacancy, a.contacts__value {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .request__field, .final-cta__field { font-size: 16px; padding-inline: 20px; }
+  .request__agree, .final-cta__agree {
+    min-height: 44px;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: normal;
+    color: var(--text-muted);
+  }
+  .cta, .clients__cta, .request__submit, .final-cta__submit {
+    min-height: 48px;
+    height: auto;
+    padding-block: 12px;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+  .request__card { gap: 48px; justify-content: space-between; }
+  .request__content { flex: 0 1 401px; }
+  .request__form { flex: 0 1 350px; min-width: 0; }
+  .request__submit svg, .final-cta__submit svg { width: 17px; height: 14px; }
+  .geography__map { max-width: none; }
+  @media (min-width: 1200px) {
+    /* Форма остается в потоке: подсказки после отправки увеличивают секцию. */
+    .final-cta__inner { height: auto; min-height: 785px; padding-block: 407px 80px; }
+    .final-cta__content { position: relative; top: auto; left: auto; margin-left: 95px; }
+    .final-cta__line--center { height: calc(100% - 344px); }
+  }
+  @media (min-width: 1600px) {
+    .hero__content {
+      grid-template-columns: minmax(0, 780px) minmax(0, 410px);
+      column-gap: clamp(48px, 12vw, 240px);
+    }
+  }
+  @media (min-width: 769px) and (max-width: 1199px) {
+    :root { --pad-side: clamp(28px, 5vw, 60px); }
+    .hero { --hero-pad-x: var(--pad-side); }
+    .menu { gap: clamp(20px, 4vw, 48px); }
+    .menu a { font-size: 13px; min-height: 44px; }
+    .logo__word { width: 120px; height: 34px; }
+    .topbar__inner::before { display: none; }
+    .hero__content { gap: 40px; }
+    .hero__title { max-width: 620px; }
+    .hero__aside { margin-left: auto; }
+    .services__head { gap: 32px; }
+    .services__title { max-width: 56%; font-size: clamp(44px, 5vw, 60px); }
+    .services__list::before { right: 39%; }
+    .services__row { gap: 24px; }
+    .services__lead { gap: 24px; padding-right: 0; }
+    .services__img { width: 90px; height: 64px; }
+    .services__name { font-size: clamp(28px, 3.5vw, 40px); }
+    .services__desc { width: 39%; padding-left: 24px; font-size: 16px; }
+    .about { gap: 48px; }
+    .about__side { width: 28%; gap: 80px; }
+    .about__title { font-size: clamp(40px, 5vw, 60px); }
+    .about__stats { width: 100%; gap: 24px; align-items: flex-start; }
+    .about__stat { flex: 1; }
+    .about__num { font-size: clamp(64px, 7vw, 84px); }
+    .about__cap { width: auto; max-width: 160px; font-size: 14px; line-height: 1.4; }
+    .geography__stats { column-gap: 72px; margin-right: 0; }
+    .geography__value { font-size: clamp(84px, 10vw, 118px); }
+    .request__card { padding: 48px 32px; gap: 40px; }
+    .request__title { font-size: 42px; }
+    .clients { min-height: auto; padding-block: 80px; }
+    .clients__inner { height: auto; display: flex; flex-direction: column; }
+    .clients__label, .clients__title, .clients__intro, .clients__logos,
+    .clients__logo-card, .clients__letters-label, .clients__letters-title,
+    .clients__letters { position: static; }
+    .clients__title { margin-top: 32px; max-width: 100%; }
+    .clients__intro { margin: 32px 0 0 auto; max-width: 100%; }
+    .clients__logos {
+      width: 100%; margin-top: 56px; display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px;
+    }
+    .clients__logo-card { width: 100%; height: auto; aspect-ratio: 165 / 131; }
+    .clients__logo { max-height: 65%; }
+    .clients__letters-label { margin-top: 64px; }
+    .clients__letters-title { margin-top: 32px; }
+    .clients__letters {
+      width: 100%; margin-top: 40px;
+      grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+    }
+    .clients__letter { width: 100%; height: auto; aspect-ratio: 346 / 244; }
+    .final-cta { min-height: auto; padding: 80px var(--pad-x); }
+    .final-cta__inner {
+      height: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center; gap: 56px 48px;
+    }
+    .final-cta__title, .final-cta__content, .final-cta__wordmark { position: static; }
+    .final-cta__title { grid-column: 1 / -1; width: 100%; max-width: 550px; margin: auto; transform: none; }
+    .final-cta__line { display: none; }
+    .final-cta__content, .final-cta__form, .final-cta__text { width: 100%; }
+    .final-cta__wordmark { width: 100%; height: auto; aspect-ratio: 380 / 107; }
+  }
+  @media (max-width: 768px) {
+    :root { --label: #999999; }
+    .hero { min-height: 680px; min-height: max(680px, 100svh); background-position: 42% center; }
+    .topbar { padding-inline: var(--pad-side); }
+    .topbar__inner { min-height: 76px; }
+    .logo__word { width: 120px; height: 34px; }
+    .hero__content { padding: 64px var(--pad-side) 40px; row-gap: 32px; }
+    .hero__title { font-size: clamp(40px, 10.5vw, 64px); max-width: 560px; }
+    .hero__aside { gap: 28px; }
+    .hero__text { max-width: 460px; line-height: 1.4; }
+    .services, .about, .geography, .request, .clients { padding-block: var(--section-space); }
+    .services__head { flex-direction: column; gap: 28px; margin-bottom: 32px; }
+    .services__title, .about__title, .geography__title, .clients__title,
+    .clients__letters-title, .final-cta__title, .contacts__title { font-size: clamp(36px, 9.2vw, 52px); }
+    .services__lead { width: 100%; gap: 20px; align-items: center; }
+    .services__img { width: clamp(80px, 23vw, 120px); height: auto; aspect-ratio: 11 / 7; }
+    .services__name { font-size: clamp(26px, 6.7vw, 36px); opacity: .8; }
+    .services__desc { opacity: 1; color: var(--text-muted); line-height: 1.4; }
+    .services__row { padding-block: 24px; }
+    .about { gap: 36px; }
+    .about__side { gap: 28px; }
+    .about__main { width: 100%; gap: 32px; }
+    .about__intro { line-height: 1.4; max-width: 480px; }
+    .about__stats { width: 100%; display: grid; grid-template-columns: 1fr; gap: 24px; }
+    .about__stat { width: 100%; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 20px; align-items: center; }
+    .about__stats .about__stat { padding-top: 24px; border-top: 1px solid var(--line-dim); }
+    .about__num { font-size: 72px; }
+    .about__cap, .about__cap--narrow { width: auto; max-width: 260px; font-size: 16px; line-height: 1.4; margin: 0; }
+    .about__certs { gap: 20px; }
+    .about__cert { font-size: 16px; line-height: 1.4; }
+    .geography__stats { margin: 36px 0 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
+    .geography__value { font-size: clamp(56px, 16vw, 88px); }
+    .geography__caption { font-size: 16px; line-height: 1.4; }
+    .geography__map { object-position: 45% center; opacity: .2; }
+    .request__card { padding: 32px 24px; gap: 32px; }
+    .request__content, .request__form { flex: auto; }
+    .request__title { font-size: clamp(32px, 8.3vw, 44px); }
+    .request .section-label { color: #bbbbbb; }
+    .request__form { gap: 20px; }
+    .request__text, .final-cta__text { line-height: 1.4; }
+    .request__agree, .final-cta__agree { align-items: center; padding-block: 8px; font-size: 14px; line-height: 1.4; }
+    .request__submit, .final-cta__submit { align-items: center; }
+    .clients__title, .clients__letters-title { margin-top: 28px; }
+    .clients__intro { margin-top: 28px; }
+    .clients__text { max-width: 480px; line-height: 1.4; }
+    .clients__logos { margin-top: 36px; gap: 12px; }
+    .clients__logo { max-width: 72%; max-height: 62%; }
+    .clients__letters-title { overflow-wrap: anywhere; }
+    .clients__letters { margin-top: 28px; }
+    .final-cta { padding-top: var(--section-space); }
+    .final-cta__content { margin-top: 32px; }
+    .final-cta__wordmark { width: min(100%, 300px); margin-top: 48px; }
+    .contacts { padding-top: var(--section-space); }
+    .contacts__top { gap: 28px; }
+    .contacts__name { line-height: 1.4; margin-bottom: 16px; }
+    .contacts__col .section-label { margin-bottom: 20px; }
+  }
+  @media (min-width: 540px) and (max-width: 768px) {
+    .clients__logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .clients__letters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 359px) {
+    .request__card { padding-inline: 20px; }
+    .services__lead { gap: 16px; }
+    .about__stat { grid-template-columns: 100px minmax(0, 1fr); gap: 16px; }
+    .about__num { font-size: 64px; }
+  }
   /* ── Попап заявки ───────────────────────────────────────── */
   body.modal-open {
     overflow: hidden;
@@ -1896,11 +2059,6 @@
     border-radius: 3px;
     cursor: pointer;
   }
-  .lead-modal__checkbox:checked {
-    background:
-      linear-gradient(45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 6px 12px / 7px 7px no-repeat,
-      linear-gradient(-45deg, transparent 45%, var(--white) 45% 55%, transparent 55%) 11px 10px / 11px 9px no-repeat;
-  }
   .lead-modal__link {
     color: #bdbdbd;
     text-decoration: underline;
@@ -2011,10 +2169,103 @@
       width: 100%;
     }
   }
+  /* На небольшом экране и при открытой клавиатуре форма прокручивается внутри. */
+  .lead-modal__card { overscroll-behavior: contain; }
+  .lead-modal__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lead-modal__country { min-width: 44px; min-height: 44px; }
+  .lead-modal__country-list { width: 100%; }
+  .lead-modal__country-option { min-height: 44px; }
+  .lead-modal__submit { gap: 16px; align-items: center; line-height: 1.35; }
+  .lead-modal__card { max-height: calc(100dvh - 36px); }
+
+  /* Единый аккуратный чекбокс для всех трёх форм. */
+  .request__checkbox,
+  .final-cta__checkbox,
+  .lead-modal__checkbox {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    margin: 0;
+    border: 1px solid #8e8e8e;
+    border-radius: 4px;
+    background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease;
+  }
+  .request__checkbox:checked,
+  .final-cta__checkbox:checked,
+  .lead-modal__checkbox:checked {
+    border-color: var(--white);
+    background-color: var(--white);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.25 6.35 11.5 13 4.85' fill='none' stroke='%23101010' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .request__checkbox:hover,
+  .final-cta__checkbox:hover,
+  .lead-modal__checkbox:hover { border-color: var(--white); }
+  .request__agree,
+  .final-cta__agree,
+  .lead-modal__agree { align-items: center; gap: 12px; }
+  @media (max-width: 768px) {
+    .lead-modal__card { max-height: calc(100dvh - 40px); }
+    .lead-modal__row { grid-template-columns: 1fr; }
+    .lead-modal__phone { gap: 8px; padding-inline: 16px; }
+    .lead-modal__title { font-size: clamp(36px, 11vw, 48px); line-height: 1; }
+    .lead-modal__text { font-size: 16px; line-height: 1.4; }
+  }
+  @media (max-height: 500px) {
+    .lead-modal { align-items: flex-start; padding: 12px 60px; }
+    .lead-modal__card { height: auto; max-height: calc(100dvh - 24px); padding: 24px; }
+    .lead-modal__close { top: 12px; right: 8px; }
+    .lead-modal__title { margin-bottom: 12px; font-size: 36px; line-height: 1; }
+    .lead-modal__text { margin-bottom: 20px; font-size: 16px; line-height: 1.4; }
+    .lead-modal__field, .lead-modal__phone, .lead-modal__select { height: 50px; }
+    .lead-modal__select { background-position: calc(100% - 31px) 23px, calc(100% - 25px) 23px; }
+    .lead-modal__agreements { margin-bottom: 12px; }
+  }
+  @media (max-height: 500px) and (max-width: 480px) {
+    .lead-modal { padding-inline: 12px; }
+    .lead-modal__card { padding: 44px 20px 24px; }
+  }
+  /* ── Доступность навигации и форм ────────────────────────── */
+  body.nav-open { overflow: hidden; }
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+  }
+  .lead-modal__country-option:focus-visible { outline-offset: -3px; }
+  .lead-modal__error:empty,
+  .lead-modal__success:empty { display: none; }
+  .lead-modal__error,
+  .lead-modal__success { line-height: 1.4; }
+  .lead-modal__phone-input { min-width: 0; }
+  .form-feedback {
+    color: #b8b8b8;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .form-feedback[hidden] { display: none; }
+  .form-feedback a,
+  .lead-modal__success a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--white);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  @media (max-width: 768px) {
+    .menu { visibility: hidden; }
+    .nav-open .menu { visibility: visible; }
+  }
 </style>
 </head>
 <body id="top">
-<div class="site-noise" aria-hidden="true"></div>
 <div class="cursor-dot" aria-hidden="true"></div>
 <div class="cursor-dot-outline" aria-hidden="true"></div>
 
@@ -2023,11 +2274,11 @@
   <header class="topbar">
     <div class="topbar__inner">
       <a class="logo" href="#top" aria-label="Kairat Security — на главную">
-        <img class="logo__mark" src="assets/logo.png" alt="">
-        <img class="logo__word" src="assets/wordmark.svg" alt="Kairat Security">
+        <img width="175" height="176" class="logo__mark" src="assets/logo.webp" alt="">
+        <img width="92" height="26" class="logo__word" src="assets/wordmark.svg" alt="Kairat Security">
       </a>
 
-      <nav class="menu" id="menu">
+      <nav class="menu" id="menu" aria-label="Основная навигация">
         <a href="#top">Главная</a>
         <a href="#services">Услуги
           <svg class="chevron" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2038,7 +2289,7 @@
         <a href="#contacts">Контакты</a>
       </nav>
 
-      <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -2072,7 +2323,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-physical.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-physical.webp" alt="">
         <h3 class="services__name">Физическая охрана</h3>
       </div>
       <p class="services__desc">Обеспечиваем комплексную безопасность и&nbsp;контроль доступа на&nbsp;вашей территории</p>
@@ -2080,7 +2331,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-technical.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-technical.webp" alt="">
         <h3 class="services__name">Техническая охрана</h3>
       </div>
       <p class="services__desc">Проектируем и&nbsp;монтируем современные системы видеонаблюдения и&nbsp;сигнализации</p>
@@ -2088,7 +2339,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-gbr.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-gbr.webp" alt="">
         <h3 class="services__name">Пультовая охрана (ГБР)</h3>
       </div>
       <p class="services__desc">Осуществляем круглосуточный мониторинг и&nbsp;мгновенное вооруженное реагирование на&nbsp;сигналы тревоги</p>
@@ -2096,7 +2347,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-cargo.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-cargo.webp" alt="">
         <h3 class="services__name">Сопровождение грузов</h3>
       </div>
       <p class="services__desc">Гарантируем сохранность и&nbsp;безопасное перемещение ваших материальных ценностей</p>
@@ -2104,7 +2355,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-antispy.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-antispy.webp" alt="">
         <h3 class="services__name">Антишпионская проверка помещений и&nbsp;транспорта</h3>
       </div>
       <p class="services__desc">Выявляем и&nbsp;устраняем каналы утечки информации, обеспечивая полную конфиденциальность</p>
@@ -2112,7 +2363,7 @@
 
     <div class="services__row">
       <div class="services__lead">
-        <img class="services__img" src="assets/service-bodyguard.png" alt="">
+        <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-bodyguard.webp" alt="">
         <h3 class="services__name">Услуга телохранителей</h3>
       </div>
       <p class="services__desc">Обеспечиваем личную безопасность, защиту жизни и&nbsp;здоровья клиента</p>
@@ -2129,7 +2380,7 @@
     <p class="about__intro">Наша компания обладает большим опытом и&nbsp;постоянно развивается, внедряя современные технологии в&nbsp;сферу безопасности</p>
     <div class="about__stat">
       <p class="about__num">10</p>
-      <p class="about__cap about__cap--narrow">Года в&nbsp;сфере охраны и&nbsp;безопасности</p>
+      <p class="about__cap about__cap--narrow">Лет в&nbsp;сфере охраны и&nbsp;безопасности</p>
     </div>
   </div>
 
@@ -2140,9 +2391,9 @@
     </div>
 
     <div class="about__certs">
-      <p class="about__cert">Свидетельство «Лидер отрасли 2019» <span>+</span></p>
-      <p class="about__cert">Сертификат по&nbsp;БиОТ <span>+</span></p>
-      <p class="about__cert">Лицензия на&nbsp;осуществление частной охранной деятельности <span>+</span></p>
+      <p class="about__cert">Свидетельство «Лидер отрасли 2019»</p>
+      <p class="about__cert">Сертификат по&nbsp;БиОТ</p>
+      <p class="about__cert">Лицензия на&nbsp;осуществление частной охранной деятельности</p>
     </div>
 
     <div class="about__stats">
@@ -2165,7 +2416,7 @@
 
 <section class="geography" id="geography">
 
-  <img class="geography__map" src="assets/geography-map.png" alt="">
+  <img width="2162" height="1244" loading="lazy" decoding="async" class="geography__map" src="assets/geography-map.png" alt="">
 
   <p class="section-label geography__label">[ География ]</p>
   <h2 class="geography__title">Работаем по&nbsp;всему Казахстану</h2>
@@ -2204,20 +2455,20 @@
 
     <form class="request__form" action="#" method="post">
       <div class="request__fields">
-        <input class="request__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
-        <input class="request__field" type="tel" name="phone" placeholder="+7(777)5587434" autocomplete="tel">
+        <input class="request__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
+        <input class="request__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
         <label class="request__agree">
-          <input class="request__checkbox" type="checkbox" name="privacy" required>
-          <span>Я согласен с&nbsp;Политикой обработки персональных данных</span>
+          <input class="request__checkbox" type="checkbox" name="contact_consent" required>
+          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
         </label>
       </div>
-
       <button class="request__submit" type="submit">
-        <span class="btn-label">Оставить заявку</span>
+        <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
         <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
         </svg>
       </button>
+      <p class="form-feedback" role="status" hidden></p>
     </form>
   </div>
 
@@ -2225,7 +2476,7 @@
 
 <section class="clients" id="clients">
 
-  <img class="clients__bg" src="assets/clients-bg.png" alt="">
+  <img width="1920" height="1080" loading="lazy" decoding="async" class="clients__bg" src="assets/clients-bg.webp" alt="">
 
   <div class="clients__inner">
     <p class="section-label clients__label">[ Клиенты ]</p>
@@ -2243,34 +2494,34 @@
 
     <div class="clients__logos" aria-label="Клиенты Kairat Security">
       <div class="clients__logo-card clients__logo-card--nomad">
-        <img class="clients__logo clients__logo--nomad" src="assets/client-logo-nomadcar.png" alt="Nomadcar">
+        <img width="2446" height="190" loading="lazy" decoding="async" class="clients__logo clients__logo--nomad" src="assets/client-logo-nomadcar.png" alt="Nomadcar">
       </div>
       <div class="clients__logo-card clients__logo-card--sultan">
-        <img class="clients__logo clients__logo--sultan" src="assets/client-logo-sultan.png" alt="Sultan">
+        <img width="500" height="500" loading="lazy" decoding="async" class="clients__logo clients__logo--sultan" src="assets/client-logo-sultan.png" alt="Sultan">
       </div>
       <div class="clients__logo-card clients__logo-card--round">
-        <img class="clients__logo clients__logo--round" src="assets/client-logo-round.png" alt="Клиент Kairat Security">
+        <img width="1080" height="1105" loading="lazy" decoding="async" class="clients__logo clients__logo--round" src="assets/client-logo-round.png" alt="Клиент Kairat Security">
       </div>
       <div class="clients__logo-card clients__logo-card--luxcar">
-        <img class="clients__logo clients__logo--luxcar" src="assets/client-logo-luxcar.png" alt="Lux Car">
+        <img width="645" height="665" loading="lazy" decoding="async" class="clients__logo clients__logo--luxcar" src="assets/client-logo-luxcar.png" alt="Lux Car">
       </div>
       <div class="clients__logo-card clients__logo-card--sinomost">
-        <img class="clients__logo clients__logo--sinomost" src="assets/client-logo-sinomost.png" alt="Sinomost">
+        <img width="600" height="302" loading="lazy" decoding="async" class="clients__logo clients__logo--sinomost" src="assets/client-logo-sinomost.png" alt="Sinomost">
       </div>
       <div class="clients__logo-card clients__logo-card--xcmg">
-        <img class="clients__logo clients__logo--xcmg" src="assets/client-logo-xcmg.png" alt="XCMG">
+        <img width="600" height="600" loading="lazy" decoding="async" class="clients__logo clients__logo--xcmg" src="assets/client-logo-xcmg.png" alt="XCMG">
       </div>
       <div class="clients__logo-card clients__logo-card--samruk">
-        <img class="clients__logo clients__logo--samruk" src="assets/client-logo-samruk.png" alt="Samruk Kazyna">
+        <img width="1200" height="546" loading="lazy" decoding="async" class="clients__logo clients__logo--samruk" src="assets/client-logo-samruk.png" alt="Samruk Kazyna">
       </div>
       <div class="clients__logo-card clients__logo-card--ktz">
-        <img class="clients__logo clients__logo--ktz" src="assets/client-logo-ktz.png" alt="KTZ Express">
+        <img width="432" height="73" loading="lazy" decoding="async" class="clients__logo clients__logo--ktz" src="assets/client-logo-ktz.png" alt="KTZ Express">
       </div>
       <div class="clients__logo-card clients__logo-card--damu">
-        <img class="clients__logo clients__logo--damu" src="assets/client-logo-damu.png" alt="Damu School">
+        <img width="1080" height="1080" loading="lazy" decoding="async" class="clients__logo clients__logo--damu" src="assets/client-logo-damu.png" alt="Damu School">
       </div>
       <div class="clients__logo-card clients__logo-card--kep">
-        <img class="clients__logo clients__logo--kep" src="assets/client-logo-kep.png" alt="KEP">
+        <img width="229" height="93" loading="lazy" decoding="async" class="clients__logo clients__logo--kep" src="assets/client-logo-kep.png" alt="KEP">
       </div>
     </div>
 
@@ -2278,9 +2529,9 @@
     <h3 class="clients__letters-title">Благодарственные письма</h3>
 
     <div class="clients__letters">
-      <img class="clients__letter" src="assets/client-letter-1.png" alt="Благодарственное письмо клиента">
-      <img class="clients__letter" src="assets/client-letter-2.png" alt="Благодарственное письмо клиента">
-      <img class="clients__letter" src="assets/client-letter-3.png" alt="Благодарственное письмо клиента">
+      <img width="1400" height="987" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-1.webp" alt="Благодарственное письмо клиента">
+      <img width="1400" height="989" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-2.webp" alt="Благодарственное письмо клиента">
+      <img width="1400" height="997" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-3.webp" alt="Благодарственное письмо клиента">
     </div>
   </div>
 
@@ -2303,26 +2554,26 @@
 
       <form class="final-cta__form" action="#" method="post">
         <div class="final-cta__fields">
-          <input class="final-cta__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
-          <input class="final-cta__field" type="tel" name="phone" placeholder="+7(777)5587434" autocomplete="tel">
+          <input class="final-cta__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
+          <input class="final-cta__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
         </div>
 
         <label class="final-cta__agree">
-          <input class="final-cta__checkbox" type="checkbox" name="privacy" required>
-          <span>Я согласен с&nbsp;Политикой обработки персональных данных</span>
+          <input class="final-cta__checkbox" type="checkbox" name="contact_consent" required>
+          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
         </label>
-
         <button class="final-cta__submit" type="submit">
-          <span class="btn-label">Оставить заявку</span>
+          <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
           <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
           </svg>
         </button>
+        <p class="form-feedback" role="status" hidden></p>
       </form>
     </div>
 
     <div class="final-cta__wordmark" aria-hidden="true">
-      <img src="assets/wordmark.svg" alt="">
+      <img width="92" height="26" loading="lazy" decoding="async" src="assets/wordmark.svg" alt="">
     </div>
   </div>
 
@@ -2363,7 +2614,7 @@
 
     <div class="contacts__col">
       <p class="section-label">[ Работа в&nbsp;компании ]</p>
-      <a class="contacts__vacancy" href="#request">
+      <a class="contacts__vacancy" href="tel:+77775922722" data-lead-intent="vacancy">
         Оставить заявку на&nbsp;вакансию охранника
         <span aria-hidden="true">+</span>
       </a>
@@ -2372,29 +2623,30 @@
 
 </footer>
 
-<div class="lead-modal" id="lead-modal" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title" aria-hidden="true" hidden>
+<div class="lead-modal" id="lead-modal" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title" aria-describedby="lead-modal-description" tabindex="-1" aria-hidden="true" hidden>
   <button class="lead-modal__close" type="button" aria-label="Закрыть форму" data-lead-close></button>
 
   <div class="lead-modal__card">
     <h2 class="lead-modal__title" id="lead-modal-title">Оставить заявку</h2>
-    <p class="lead-modal__text">Давайте обсудим ваш проект? Оставьте ваши данные, чтобы менеджер мог связаться с&nbsp;вами</p>
+    <p class="lead-modal__text" id="lead-modal-description">Обсудим вашу безопасность. Укажите имя и&nbsp;удобный способ связи</p>
 
     <form class="lead-modal__form" action="#" method="post" novalidate>
-      <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" autocomplete="name" required>
+      <input type="hidden" name="request_type" value="consultation">
+      <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
 
       <div class="lead-modal__row">
         <div class="lead-modal__phone-wrap">
           <div class="lead-modal__phone">
-            <button class="lead-modal__country" type="button" aria-label="Выбрать страну" aria-haspopup="listbox" aria-expanded="false">
+            <button class="lead-modal__country" type="button" aria-label="Выбрать страну: Казахстан, код +7" aria-haspopup="listbox" aria-expanded="false" aria-controls="lead-country-list">
               <span class="lead-modal__flag lead-modal__flag--emoji" data-country-flag aria-hidden="true">🇰🇿</span>
               <span class="lead-modal__country-chevron" aria-hidden="true"></span>
             </button>
             <span class="lead-modal__prefix" data-country-code>+7</span>
-            <input class="lead-modal__phone-input" type="tel" name="phone" placeholder="(000) 000-00-00" autocomplete="tel" aria-label="Номер телефона">
+            <input class="lead-modal__phone-input" type="tel" name="phone" placeholder="(777) 123-45-67" autocomplete="tel-national" inputmode="tel" maxlength="30" aria-label="Номер телефона">
             <input type="hidden" name="country" value="Kazakhstan" data-country-name>
           </div>
 
-          <div class="lead-modal__country-list" role="listbox" aria-label="Выбор страны" hidden>
+          <div class="lead-modal__country-list" id="lead-country-list" role="listbox" aria-label="Выбор страны" hidden>
             <button class="lead-modal__country-option" type="button" role="option" data-name="Afghanistan" data-code="+93" data-flag="🇦🇫"><span class="lead-modal__country-name">Afghanistan (افغانستان)</span><span class="lead-modal__country-meta"><span>+93</span><span class="lead-modal__country-emoji">🇦🇫</span></span></button>
             <button class="lead-modal__country-option" type="button" role="option" data-name="Albania" data-code="+355" data-flag="🇦🇱"><span class="lead-modal__country-name">Albania (Shqipëri)</span><span class="lead-modal__country-meta"><span>+355</span><span class="lead-modal__country-emoji">🇦🇱</span></span></button>
             <button class="lead-modal__country-option" type="button" role="option" data-name="Algeria" data-code="+213" data-flag="🇩🇿"><span class="lead-modal__country-name">Algeria (الجزائر)</span><span class="lead-modal__country-meta"><span>+213</span><span class="lead-modal__country-emoji">🇩🇿</span></span></button>
@@ -2416,25 +2668,20 @@
           </div>
         </div>
 
-        <input class="lead-modal__field" type="email" name="email" placeholder="Ваша почта" autocomplete="email">
+        <input class="lead-modal__field" type="email" name="email" placeholder="Ваша почта" aria-label="Электронная почта" autocomplete="email" maxlength="254">
       </div>
 
-      <select class="lead-modal__select" name="contact_method" required>
+      <select class="lead-modal__select" name="contact_method" aria-label="Удобный способ связи" required>
         <option value="" selected disabled>Где связаться?</option>
         <option value="whatsapp">WhatsApp</option>
-        <option value="telegram">Telegram</option>
         <option value="email">Email</option>
         <option value="phone">Телефон</option>
       </select>
 
       <div class="lead-modal__agreements">
         <label class="lead-modal__agree">
-          <input class="lead-modal__checkbox" type="checkbox" name="privacy" required>
-          <span>Я согласен с&nbsp;<span class="lead-modal__link">политикой конфиденциальности</span></span>
-        </label>
-        <label class="lead-modal__agree">
-          <input class="lead-modal__checkbox" type="checkbox" name="personal_data" required>
-          <span>Даю согласие на&nbsp;<span class="lead-modal__link">обработку персональных данных</span></span>
+          <input class="lead-modal__checkbox" type="checkbox" name="contact_consent" required>
+          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
         </label>
       </div>
 
@@ -2442,7 +2689,7 @@
       <p class="lead-modal__success" aria-live="polite"></p>
 
       <button class="lead-modal__submit" type="submit">
-        <span class="btn-label">Отправить заявку</span>
+        <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
         </svg>
@@ -2453,186 +2700,372 @@
 
 <script src="assets/SmoothScroll.min.js"></script>
 <script>
-  const burger = document.querySelector(".burger");
-  const menuLinks = document.querySelectorAll(".menu a");
-  const leadModal = document.querySelector("#lead-modal");
-  const leadForm = document.querySelector(".lead-modal__form");
-  const leadName = leadForm.querySelector('input[name="name"]');
-  const leadPhone = leadForm.querySelector('input[name="phone"]');
-  const leadEmail = leadForm.querySelector('input[name="email"]');
-  const leadError = leadForm.querySelector(".lead-modal__error");
-  const leadSuccess = leadForm.querySelector(".lead-modal__success");
-  const countryToggle = leadForm.querySelector(".lead-modal__country");
-  const countryList = leadForm.querySelector(".lead-modal__country-list");
-  const countryOptions = leadForm.querySelectorAll(".lead-modal__country-option");
-  const countryFlag = leadForm.querySelector("[data-country-flag]");
-  const countryCode = leadForm.querySelector("[data-country-code]");
-  const countryName = leadForm.querySelector("[data-country-name]");
-  let leadLastFocus = null;
+  (() => {
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.menu');
+    const menuLinks = [...menu.querySelectorAll('a')];
+    const mobileQuery = window.matchMedia('(max-width: 768px)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const leadModal = document.querySelector('#lead-modal');
+    const leadForm = document.querySelector('.lead-modal__form');
+    const leadName = leadForm.elements.name;
+    const leadPhone = leadForm.elements.phone;
+    const leadEmail = leadForm.elements.email;
+    const contactMethod = leadForm.elements.contact_method;
+    const leadError = leadForm.querySelector('.lead-modal__error');
+    const leadSuccess = leadForm.querySelector('.lead-modal__success');
+    const countryToggle = leadForm.querySelector('.lead-modal__country');
+    const countryList = leadForm.querySelector('.lead-modal__country-list');
+    const countryOptions = [...leadForm.querySelectorAll('.lead-modal__country-option')];
+    const countryFlag = leadForm.querySelector('[data-country-flag]');
+    const countryCode = leadForm.querySelector('[data-country-code]');
+    const countryName = leadForm.querySelector('[data-country-name]');
+    const shortForms = [...document.querySelectorAll('.request__form, .final-cta__form')];
+    let leadLastFocus = null;
+    let restoreBackground = () => {};
+    let navScrollFrame = 0;
 
-  SmoothScroll({
-    animationTime: 800,
-    stepSize: 75,
-    accelerationDelta: 30,
-    accelerationMax: 2,
-    keyboardSupport: true,
-    arrowScroll: 50,
-    pulseAlgorithm: true,
-    pulseScale: 4,
-    pulseNormalize: 1,
-    touchpadSupport: true
-  });
+    const configureSmoothScroll = () => {
+      if (typeof window.SmoothScroll !== 'function') return;
+      if (motionQuery.matches) {
+        window.SmoothScroll.destroy?.();
+        return;
+      }
+      window.SmoothScroll({
+        animationTime: 800,
+        stepSize: 75,
+        accelerationDelta: 30,
+        accelerationMax: 2,
+        keyboardSupport: true,
+        arrowScroll: 50,
+        pulseAlgorithm: true,
+        pulseScale: 4,
+        pulseNormalize: 1,
+        touchpadSupport: true
+      });
+    };
+    configureSmoothScroll();
+    motionQuery.addEventListener('change', configureSmoothScroll);
 
-  burger.addEventListener("click", () => {
-    const open = document.body.classList.toggle("nav-open");
-    burger.setAttribute("aria-expanded", open);
-    burger.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
-  });
+    // Блокируем только фон, сохраняя прежнее состояние каждого элемента.
+    const isolateControls = allowed => {
+      restoreBackground();
+      const changed = [];
+      const walk = parent => {
+        [...parent.children].forEach(element => {
+          if (allowed.includes(element) || /^(SCRIPT|STYLE|LINK)$/.test(element.tagName)) return;
+          if (allowed.some(control => element.contains(control))) {
+            walk(element);
+          } else {
+            changed.push([element, element.inert]);
+            element.inert = true;
+          }
+        });
+      };
+      walk(document.body);
+      restoreBackground = () => {
+        changed.forEach(([element, wasInert]) => { element.inert = wasInert; });
+        restoreBackground = () => {};
+      };
+    };
 
-  menuLinks.forEach(link =>
-    link.addEventListener("click", () => {
-      document.body.classList.remove("nav-open");
-      burger.setAttribute("aria-expanded", "false");
-    })
-  );
+    const setNavOpen = (open, returnFocus = true) => {
+      open = open && mobileQuery.matches;
+      const wasOpen = document.body.classList.contains('nav-open');
+      if (wasOpen) restoreBackground();
+      document.body.classList.toggle('nav-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+      menu.inert = mobileQuery.matches && !open;
+      if (open) {
+        isolateControls([menu, burger]);
+        menuLinks[0].focus();
+      } else if (returnFocus && mobileQuery.matches && (wasOpen || menu.contains(document.activeElement))) {
+        burger.focus();
+      }
+    };
+    setNavOpen(false);
+    burger.addEventListener('click', () => setNavOpen(!document.body.classList.contains('nav-open')));
 
-  const resetLeadMessages = () => {
-    leadError.textContent = "";
-    leadSuccess.textContent = "";
-    leadPhone.setCustomValidity("");
-    leadEmail.setCustomValidity("");
-  };
+    const stopNavScroll = () => {
+      if (navScrollFrame) cancelAnimationFrame(navScrollFrame);
+      navScrollFrame = 0;
+      document.documentElement.classList.remove('nav-scrolling');
+    };
+    const scrollToSection = target => {
+      stopNavScroll();
+      const start = window.scrollY;
+      const end = Math.max(0, target.getBoundingClientRect().top + start);
+      const distance = end - start;
+      if (motionQuery.matches || Math.abs(distance) < 2) {
+        window.scrollTo(0, end);
+        return;
+      }
+      const duration = Math.min(950, Math.max(550, Math.abs(distance) * .16));
+      const startedAt = performance.now();
+      document.documentElement.classList.add('nav-scrolling');
+      const step = now => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const eased = progress < .5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        window.scrollTo(0, start + distance * eased);
+        if (progress < 1) {
+          navScrollFrame = requestAnimationFrame(step);
+        } else {
+          navScrollFrame = 0;
+          document.documentElement.classList.remove('nav-scrolling');
+        }
+      };
+      navScrollFrame = requestAnimationFrame(step);
+    };
+    window.addEventListener('wheel', stopNavScroll, { passive: true });
+    window.addEventListener('touchstart', stopNavScroll, { passive: true });
 
-  const closeCountryList = () => {
-    countryList.hidden = true;
-    countryToggle.setAttribute("aria-expanded", "false");
-  };
-
-  const openCountryList = () => {
-    countryList.hidden = false;
-    countryToggle.setAttribute("aria-expanded", "true");
-  };
-
-  const selectCountry = (option) => {
-    countryOptions.forEach(item => item.setAttribute("aria-selected", item === option ? "true" : "false"));
-    countryFlag.textContent = option.dataset.flag;
-    countryCode.textContent = option.dataset.code;
-    countryName.value = option.dataset.name;
-    closeCountryList();
-    leadPhone.focus();
-  };
-
-  const openLeadModal = (sourceForm) => {
-    leadLastFocus = document.activeElement;
-    resetLeadMessages();
-    closeCountryList();
-
-    if (sourceForm) {
-      const sourceName = sourceForm.querySelector('input[name="name"]');
-      const sourcePhone = sourceForm.querySelector('input[name="phone"]');
-      if (sourceName?.value) leadName.value = sourceName.value;
-      if (sourcePhone?.value) leadPhone.value = sourcePhone.value.replace(/^\+7\s?/, "");
-    }
-
-    leadModal.hidden = false;
-    leadModal.setAttribute("aria-hidden", "false");
-    document.body.classList.add("modal-open");
-    leadName.focus();
-  };
-
-  const closeLeadModal = () => {
-    closeCountryList();
-    leadModal.hidden = true;
-    leadModal.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("modal-open");
-    leadLastFocus?.focus?.();
-  };
-
-  document.querySelectorAll(".cta, .clients__cta, .request__submit, .final-cta__submit").forEach(trigger => {
-    trigger.addEventListener("click", event => {
+    menuLinks.forEach(link => link.addEventListener('click', event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const target = document.querySelector(link.hash);
+      if (!target) return;
       event.preventDefault();
-      openLeadModal(trigger.closest("form"));
-    });
-  });
+      setNavOpen(false, false);
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+      scrollToSection(target);
+      if (window.location.hash !== link.hash) history.pushState(null, '', link.hash);
+    }));
+    mobileQuery.addEventListener('change', () => setNavOpen(false));
 
-  document.querySelectorAll(".request__form, .final-cta__form").forEach(form => {
-    form.setAttribute("novalidate", "");
-    form.addEventListener("submit", event => {
+    const resetLeadMessages = () => {
+      leadError.textContent = '';
+      leadSuccess.textContent = '';
+      [leadName, leadPhone, leadEmail].forEach(field => field.setCustomValidity(''));
+    };
+    const closeCountryList = () => {
+      countryList.hidden = true;
+      countryToggle.setAttribute('aria-expanded', 'false');
+    };
+    const openCountryList = () => {
+      countryList.hidden = false;
+      countryToggle.setAttribute('aria-expanded', 'true');
+      countryOptions.forEach(option => { option.tabIndex = option.getAttribute('aria-selected') === 'true' ? 0 : -1; });
+      (countryOptions.find(option => option.getAttribute('aria-selected') === 'true') || countryOptions[0]).focus();
+    };
+    const selectCountry = (option, focusPhone = true) => {
+      countryOptions.forEach(item => {
+        const selected = item === option;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
+      });
+      countryFlag.textContent = option.dataset.flag;
+      countryCode.textContent = option.dataset.code;
+      countryName.value = option.dataset.name;
+      countryToggle.setAttribute('aria-label', `Выбрать страну: ${option.querySelector('.lead-modal__country-name').textContent}, код ${option.dataset.code}`);
+      leadPhone.placeholder = option.dataset.code === '+7' ? '(777) 123-45-67' : 'Номер без кода страны';
+      leadPhone.setCustomValidity('');
+      closeCountryList();
+      if (focusPhone) leadPhone.focus();
+    };
+    countryOptions.forEach(option => { option.tabIndex = option.getAttribute('aria-selected') === 'true' ? 0 : -1; });
+
+    const updateRequiredContact = () => {
+      leadPhone.required = ['whatsapp', 'phone'].includes(contactMethod.value);
+      leadEmail.required = contactMethod.value === 'email';
+      resetLeadMessages();
+    };
+    contactMethod.addEventListener('change', updateRequiredContact);
+
+    const syncPhonePrefix = () => { countryCode.hidden = leadPhone.value.trim().startsWith('+'); };
+    leadPhone.addEventListener('input', syncPhonePrefix);
+    const openLeadModal = (intent = 'consultation') => {
+      leadLastFocus = document.activeElement;
+      if (document.body.classList.contains('nav-open')) setNavOpen(false, false);
+      resetLeadMessages();
+      closeCountryList();
+      leadForm.elements.request_type.value = intent;
+      leadModal.querySelector('.lead-modal__title').textContent = intent === 'vacancy' ? 'Работа охранником' : 'Оставить заявку';
+      leadModal.querySelector('.lead-modal__text').textContent = intent === 'vacancy'
+        ? 'Оставьте контакты, чтобы обсудить вакансию охранника'
+        : 'Обсудим вашу безопасность. Укажите имя и удобный способ связи';
+      syncPhonePrefix();
+      updateRequiredContact();
+      leadModal.hidden = false;
+      leadModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      isolateControls([leadModal]);
+      leadName.focus({ preventScroll: true });
+      leadModal.querySelector('.lead-modal__card').scrollTop = 0;
+    };
+    const closeLeadModal = () => {
+      closeCountryList();
+      leadModal.hidden = true;
+      leadModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      restoreBackground();
+      if (leadLastFocus?.isConnected) leadLastFocus.focus({ preventScroll: true });
+    };
+    document.querySelectorAll('.cta, .clients__cta, [data-lead-intent]').forEach(trigger => {
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', 'lead-modal');
+      trigger.addEventListener('click', event => {
+        event.preventDefault();
+        openLeadModal(trigger.dataset.leadIntent || 'consultation');
+      });
+    });
+
+    const validateName = field => {
+      field.value = field.value.trim();
+      field.setCustomValidity(field.value ? '' : 'Укажите ваше имя');
+    };
+    const validatePhone = (field, national = false) => {
+      field.setCustomValidity('');
+      const value = field.value.trim();
+      if (!value) return;
+      const digits = value.replace(/\D/g, '');
+      const dialCode = national ? countryCode.textContent.replace(/\D/g, '') : '';
+      const isFullNumber = value.startsWith('+');
+      const length = digits.length + (isFullNumber ? 0 : dialCode.length);
+      const kazakhstanOrRussia = national && dialCode === '7' && !isFullNumber;
+      const invalidLocal = !national && !isFullNumber && !(digits.length === 10 || (/^[78]/.test(digits) && digits.length === 11));
+      const invalidFullSeven = isFullNumber && digits.startsWith('7') && digits.length !== 11;
+      if (!/^\+?[\d\s().-]+$/.test(value) || length < 7 || length > 15 || invalidLocal || invalidFullSeven || (kazakhstanOrRussia && digits.length !== 10)) {
+        field.setCustomValidity(kazakhstanOrRussia ? 'Введите 10 цифр номера после +7' : 'Введите корректный номер телефона с кодом страны');
+      }
+    };
+    const formatPhone = (value, national = false) => {
+      const digits = value.replace(/\D/g, '');
+      if (!digits) return '';
+      if (value.trim().startsWith('+')) return `+${digits}`;
+      if (national) return `${countryCode.textContent}${digits}`;
+      if (digits.length === 10) return `+7${digits}`;
+      return `+${digits.replace(/^8/, '7')}`;
+    };
+    const continueInWhatsApp = (form, feedback, isModal = false) => {
+      const methodLabels = { whatsapp: 'WhatsApp', email: 'Электронная почта', phone: 'Телефон' };
+      const isVacancy = isModal && form.elements.request_type.value === 'vacancy';
+      const lines = [
+        isVacancy ? 'Здравствуйте! Хочу обсудить вакансию охранника в Kairat Security.' : 'Здравствуйте! Хочу получить консультацию по услугам Kairat Security.',
+        `Имя: ${form.elements.name.value.trim()}`
+      ];
+      const phone = formatPhone(form.elements.phone.value, isModal);
+      if (phone) lines.push(`Телефон: ${phone}`);
+      if (isModal && form.elements.email.value.trim()) lines.push(`Почта: ${form.elements.email.value.trim()}`);
+      lines.push(`Удобный способ связи: ${isModal ? methodLabels[form.elements.contact_method.value] : 'Телефон'}`);
+      const url = `https://wa.me/77781582565?text=${encodeURIComponent(lines.join('\n'))}`;
+      feedback.replaceChildren(document.createTextNode('Черновик готов. Отправьте сообщение в WhatsApp, чтобы мы получили заявку. '));
+      const fallback = document.createElement('a');
+      fallback.href = url;
+      fallback.target = '_blank';
+      fallback.rel = 'noopener noreferrer';
+      fallback.textContent = 'Открыть WhatsApp';
+      feedback.append(fallback);
+      feedback.hidden = false;
+      // Сайт готовит черновик; сообщение отправляет сам посетитель в WhatsApp.
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+    shortForms.forEach(form => {
+      // Единый submit обрабатывает и кнопку, и Enter; required не обходится кликом.
+      form.noValidate = true;
+      const feedback = form.querySelector('.form-feedback');
+      form.addEventListener('input', event => {
+        event.target.setCustomValidity?.('');
+        feedback.replaceChildren();
+        feedback.hidden = true;
+      });
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        validateName(form.elements.name);
+        validatePhone(form.elements.phone);
+        if (form.reportValidity()) continueInWhatsApp(form, feedback);
+      });
+    });
+    leadModal.addEventListener('click', event => {
+      if (event.target === leadModal || event.target.closest('[data-lead-close]')) closeLeadModal();
+    });
+    countryToggle.addEventListener('click', () => countryList.hidden ? openCountryList() : closeCountryList());
+    countryToggle.addEventListener('keydown', event => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        openCountryList();
+      }
+    });
+    countryOptions.forEach(option => option.addEventListener('click', () => selectCountry(option)));
+    countryList.addEventListener('keydown', event => {
+      const index = countryOptions.indexOf(document.activeElement);
+      let next = index;
+      if (event.key === 'ArrowDown') next = (index + 1) % countryOptions.length;
+      else if (event.key === 'ArrowUp') next = (index - 1 + countryOptions.length) % countryOptions.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = countryOptions.length - 1;
+      else return;
       event.preventDefault();
-      openLeadModal(form);
+      countryOptions.forEach((option, optionIndex) => { option.tabIndex = optionIndex === next ? 0 : -1; });
+      countryOptions[next].focus();
     });
-  });
-
-  leadModal.addEventListener("click", event => {
-    if (event.target === leadModal || event.target.closest("[data-lead-close]")) {
-      closeLeadModal();
-    }
-  });
-
-  countryToggle.addEventListener("click", event => {
-    event.stopPropagation();
-    countryList.hidden ? openCountryList() : closeCountryList();
-  });
-
-  countryOptions.forEach(option => {
-    option.addEventListener("click", event => {
-      event.stopPropagation();
-      selectCountry(option);
+    document.addEventListener('click', event => {
+      if (!countryList.hidden && !event.target.closest('.lead-modal__phone-wrap')) closeCountryList();
     });
-  });
-
-  document.addEventListener("click", event => {
-    if (!countryList.hidden && !event.target.closest(".lead-modal__phone-wrap")) {
-      closeCountryList();
-    }
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && !countryList.hidden) {
-      closeCountryList();
-      countryToggle.focus();
-      return;
-    }
-    if (event.key === "Escape" && !leadModal.hidden) {
-      closeLeadModal();
-    }
-  });
-
-  [leadPhone, leadEmail].forEach(field => {
-    field.addEventListener("input", () => {
-      leadPhone.setCustomValidity("");
-      leadEmail.setCustomValidity("");
-      leadError.textContent = "";
+    countryList.addEventListener('focusout', () => {
+      // Даем браузеру завершить переход фокуса по Tab.
+      queueMicrotask(() => {
+        if (!countryList.contains(document.activeElement)) closeCountryList();
+      });
     });
-  });
-
-  leadForm.addEventListener("submit", event => {
-    event.preventDefault();
-    resetLeadMessages();
-
-    if (!leadPhone.value.trim() && !leadEmail.value.trim()) {
-      const message = "Укажите номер телефона или почту";
-      leadPhone.setCustomValidity(message);
-      leadEmail.setCustomValidity(message);
-      leadError.textContent = message;
-    }
-
-    if (!leadForm.reportValidity()) {
-      return;
-    }
-
-    leadSuccess.textContent = "Спасибо! Заявка заполнена. Отправку подключим к выбранному каналу связи.";
-    leadForm.reset();
-    countryOptions.forEach(item => item.setAttribute("aria-selected", item.dataset.name === "Kazakhstan" ? "true" : "false"));
-    countryFlag.textContent = "🇰🇿";
-    countryCode.textContent = "+7";
-    countryName.value = "Kazakhstan";
-  });
+    const trapFocus = (event, controls) => {
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first) return;
+      if (event.shiftKey && (document.activeElement === first || !controls.includes(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !controls.includes(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        if (!countryList.hidden) {
+          event.preventDefault();
+          closeCountryList();
+          countryToggle.focus();
+        } else if (!leadModal.hidden) {
+          event.preventDefault();
+          closeLeadModal();
+        } else if (document.body.classList.contains('nav-open')) {
+          event.preventDefault();
+          setNavOpen(false);
+        }
+      }
+      if (event.key !== 'Tab') return;
+      if (!leadModal.hidden) {
+        const controls = [...leadModal.querySelectorAll('a[href], button, input, select, textarea, [tabindex]')]
+          .filter(element => element.tabIndex >= 0 && !element.disabled && element.getClientRects().length);
+        trapFocus(event, controls);
+      } else if (document.body.classList.contains('nav-open')) {
+        trapFocus(event, [...menuLinks, burger]);
+      }
+    });
+    leadForm.addEventListener('input', event => {
+      event.target.setCustomValidity?.('');
+      leadError.textContent = '';
+      leadSuccess.textContent = '';
+    });
+    leadForm.addEventListener('submit', event => {
+      event.preventDefault();
+      resetLeadMessages();
+      validateName(leadName);
+      validatePhone(leadPhone, true);
+      if (!leadForm.reportValidity()) return;
+      continueInWhatsApp(leadForm, leadSuccess, true);
+    });
+  })();
 </script>
 
 <script>
   (() => {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const dot = document.querySelector(".cursor-dot");
     const outline = document.querySelector(".cursor-dot-outline");
@@ -2658,6 +3091,7 @@
     const updateSize = () => setSize(cursor.interactive || cursor.pressed);
 
     const setVisible = visible => {
+      document.documentElement.classList.toggle("has-custom-cursor", visible);
       dot.style.opacity = visible ? "1" : "0";
       outline.style.opacity = visible ? "1" : "0";
     };
