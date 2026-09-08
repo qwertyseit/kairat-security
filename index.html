@@ -2329,6 +2329,8 @@
     line-height: 1.4;
     overflow-wrap: anywhere;
   }
+  .form-feedback[data-state="error"] { color: #ff7a7a; }
+  .form-feedback[data-state="success"] { color: #b7f0c0; }
   .form-feedback[hidden] { display: none; }
   .form-feedback a,
   .lead-modal__success a {
@@ -2338,6 +2340,23 @@
     color: var(--white);
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+  .form__honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .request__submit:disabled,
+  .final-cta__submit:disabled,
+  .lead-modal__submit:disabled {
+    cursor: wait;
+    opacity: 0.55;
   }
   @media (max-width: 768px) {
     .menu { visibility: hidden; }
@@ -2534,16 +2553,13 @@
     </div>
 
     <form class="request__form" action="#" method="post">
+      <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="request__fields">
         <input class="request__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
         <input class="request__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
-        <label class="request__agree">
-          <input class="request__checkbox" type="checkbox" name="contact_consent" required>
-          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
-        </label>
       </div>
       <button class="request__submit" type="submit">
-        <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
+        <span class="btn-label">Отправить заявку</span>
         <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
         </svg>
@@ -2636,17 +2652,13 @@
       <p class="final-cta__text">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
 
       <form class="final-cta__form" action="#" method="post">
+        <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="final-cta__fields">
           <input class="final-cta__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
           <input class="final-cta__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
         </div>
-
-        <label class="final-cta__agree">
-          <input class="final-cta__checkbox" type="checkbox" name="contact_consent" required>
-          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
-        </label>
         <button class="final-cta__submit" type="submit">
-          <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
+          <span class="btn-label">Отправить заявку</span>
           <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
           </svg>
@@ -2715,6 +2727,7 @@
 
     <form class="lead-modal__form" action="#" method="post" novalidate>
       <input type="hidden" name="request_type" value="consultation">
+      <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
 
       <div class="lead-modal__row">
@@ -2761,18 +2774,11 @@
         <option value="phone">Телефон</option>
       </select>
 
-      <div class="lead-modal__agreements">
-        <label class="lead-modal__agree">
-          <input class="lead-modal__checkbox" type="checkbox" name="contact_consent" required>
-          <span>Прошу связаться со&nbsp;мной по&nbsp;указанным контактам</span>
-        </label>
-      </div>
-
       <p class="lead-modal__error" aria-live="polite"></p>
       <p class="lead-modal__success" aria-live="polite"></p>
 
       <button class="lead-modal__submit" type="submit">
-        <span class="btn-label">Продолжить в&nbsp;WhatsApp</span>
+        <span class="btn-label">Отправить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
         </svg>
@@ -3023,43 +3029,68 @@
       if (digits.length === 10) return `+7${digits}`;
       return `+${digits.replace(/^8/, '7')}`;
     };
-    const continueInWhatsApp = (form, feedback, isModal = false) => {
-      const methodLabels = { whatsapp: 'WhatsApp', email: 'Электронная почта', phone: 'Телефон' };
-      const isVacancy = isModal && form.elements.request_type.value === 'vacancy';
-      const lines = [
-        isVacancy ? 'Здравствуйте! Хочу обсудить вакансию охранника в Kairat Security.' : 'Здравствуйте! Хочу получить консультацию по услугам Kairat Security.',
-        `Имя: ${form.elements.name.value.trim()}`
-      ];
-      const phone = formatPhone(form.elements.phone.value, isModal);
-      if (phone) lines.push(`Телефон: ${phone}`);
-      if (isModal && form.elements.email.value.trim()) lines.push(`Почта: ${form.elements.email.value.trim()}`);
-      lines.push(`Удобный способ связи: ${isModal ? methodLabels[form.elements.contact_method.value] : 'Телефон'}`);
-      const url = `https://wa.me/77781582565?text=${encodeURIComponent(lines.join('\n'))}`;
-      feedback.replaceChildren(document.createTextNode('Черновик готов. Отправьте сообщение в WhatsApp, чтобы мы получили заявку. '));
-      const fallback = document.createElement('a');
-      fallback.href = url;
-      fallback.target = '_blank';
-      fallback.rel = 'noopener noreferrer';
-      fallback.textContent = 'Открыть WhatsApp';
-      feedback.append(fallback);
+    const setSubmitState = (form, isSubmitting) => {
+      const button = form.querySelector('[type="submit"]');
+      const label = button.querySelector('.btn-label');
+      if (!button.dataset.defaultLabel) button.dataset.defaultLabel = label.textContent;
+      button.disabled = isSubmitting;
+      button.setAttribute('aria-busy', String(isSubmitting));
+      label.textContent = isSubmitting ? 'Отправляем…' : button.dataset.defaultLabel;
+    };
+    const sendLead = async (form, isModal = false) => {
+      const payload = {
+        name: form.elements.name.value.trim(),
+        phone: formatPhone(form.elements.phone.value, isModal),
+        email: isModal ? form.elements.email.value.trim() : '',
+        contactMethod: isModal ? form.elements.contact_method.value : 'phone',
+        pagePath: `${window.location.pathname}${window.location.hash}`,
+        website: form.elements.website?.value || ''
+      };
+      setSubmitState(form, true);
+      try {
+        const response = await fetch('/api/lead', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => null);
+        if (!response.ok || !result?.ok) {
+          throw new Error(result?.error || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+        }
+        return { ok: true };
+      } catch (error) {
+        return { ok: false, error: error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.' };
+      } finally {
+        setSubmitState(form, false);
+      }
+    };
+    const setShortFeedback = (feedback, message, state) => {
+      feedback.textContent = message;
+      feedback.dataset.state = state;
       feedback.hidden = false;
-      // Сайт готовит черновик; сообщение отправляет сам посетитель в WhatsApp.
-      window.open(url, '_blank', 'noopener,noreferrer');
     };
     shortForms.forEach(form => {
-      // Единый submit обрабатывает и кнопку, и Enter; required не обходится кликом.
       form.noValidate = true;
       const feedback = form.querySelector('.form-feedback');
       form.addEventListener('input', event => {
         event.target.setCustomValidity?.('');
-        feedback.replaceChildren();
+        feedback.textContent = '';
+        delete feedback.dataset.state;
         feedback.hidden = true;
       });
-      form.addEventListener('submit', event => {
+      form.addEventListener('submit', async event => {
         event.preventDefault();
         validateName(form.elements.name);
         validatePhone(form.elements.phone);
-        if (form.reportValidity()) continueInWhatsApp(form, feedback);
+        if (!form.reportValidity()) return;
+        const result = await sendLead(form);
+        if (result.ok) {
+          form.reset();
+          setShortFeedback(feedback, 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.', 'success');
+        } else {
+          setShortFeedback(feedback, result.error, 'error');
+        }
       });
     });
     leadModal.addEventListener('click', event => {
@@ -3134,13 +3165,25 @@
       leadError.textContent = '';
       leadSuccess.textContent = '';
     });
-    leadForm.addEventListener('submit', event => {
+    leadForm.addEventListener('submit', async event => {
       event.preventDefault();
       resetLeadMessages();
       validateName(leadName);
       validatePhone(leadPhone, true);
       if (!leadForm.reportValidity()) return;
-      continueInWhatsApp(leadForm, leadSuccess, true);
+      const result = await sendLead(leadForm, true);
+      if (result.ok) {
+        const requestType = leadForm.elements.request_type.value;
+        leadForm.reset();
+        leadForm.elements.request_type.value = requestType;
+        selectCountry(countryOptions.find(option => option.dataset.name === 'Kazakhstan'), false);
+        leadPhone.required = false;
+        leadEmail.required = false;
+        syncPhonePrefix();
+        leadSuccess.textContent = 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.';
+      } else {
+        leadError.textContent = result.error;
+      }
     });
   })();
 </script>

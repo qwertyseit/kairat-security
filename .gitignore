@@ -6,6 +6,8 @@ desktop.ini
 # editor / tooling
 *.log
 node_modules/
+.dev.vars*
+.env*
 
 # dev-only — не публикуем (остаются локально)
 CLAUDE.md
