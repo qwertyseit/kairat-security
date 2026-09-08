@@ -1739,7 +1739,14 @@
   }
   @media (max-width: 768px) {
     :root { --label: #999999; }
-    .hero { min-height: 680px; min-height: max(680px, 100svh); background-position: 42% center; }
+    .hero {
+      min-height: 680px;
+      min-height: max(680px, 100svh);
+      background-image: url("assets/hero-mobile.webp");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: left center;
+    }
     .topbar { padding-inline: var(--pad-side); }
     .topbar__inner { min-height: 76px; }
     .logo__word { width: 120px; height: 34px; }
@@ -1866,6 +1873,7 @@
     .clients__letters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 359px) {
+    .hero { min-height: 800px; min-height: max(800px, 100svh); }
     .request__card { padding-inline: 20px; }
     .services__lead { gap: 16px; }
     .about__side > .about__stat { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; }
