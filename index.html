@@ -1756,17 +1756,84 @@
     .services__name { font-size: clamp(26px, 6.7vw, 36px); opacity: .8; }
     .services__desc { opacity: 1; color: var(--text-muted); line-height: 1.4; }
     .services__row { padding-block: 24px; }
-    .about { gap: 36px; }
-    .about__side { gap: 28px; }
+    .about { gap: 40px; }
+    .about__side { gap: 20px; }
     .about__main { width: 100%; gap: 32px; }
-    .about__intro { line-height: 1.4; max-width: 480px; }
-    .about__stats { width: 100%; display: grid; grid-template-columns: 1fr; gap: 24px; }
-    .about__stat { width: 100%; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 20px; align-items: center; }
-    .about__stats .about__stat { padding-top: 24px; border-top: 1px solid var(--line-dim); }
-    .about__num { font-size: 72px; }
-    .about__cap, .about__cap--narrow { width: auto; max-width: 260px; font-size: 16px; line-height: 1.4; margin: 0; }
-    .about__certs { gap: 20px; }
-    .about__cert { font-size: 16px; line-height: 1.4; }
+    /* На телефоне только заголовок — дисплейный уровень текста. */
+    .about__intro {
+      max-width: 34ch;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-transform: none;
+    }
+    .about__side > .about__stat {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      padding: 18px 0;
+      border-top: 1px solid var(--line-dim);
+      border-bottom: 1px solid var(--line-dim);
+    }
+    .about__side > .about__stat .about__num { font-size: 64px; }
+    .about__side > .about__stat .about__cap {
+      width: auto;
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+    .about__title {
+      font-size: clamp(34px, 8.8vw, 42px);
+      line-height: .98;
+    }
+    .about__desc {
+      max-width: 36ch;
+      color: var(--text-muted);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .about__certs {
+      width: 100%;
+      gap: 0;
+      border-top: 1px solid var(--line-dim);
+      border-bottom: 1px solid var(--line-dim);
+    }
+    .about__cert {
+      padding: 14px 0;
+      color: #c6c6c6;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.35;
+      text-transform: none;
+    }
+    .about__cert + .about__cert { border-top: 1px solid var(--line-dim); }
+    .about__stats {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding-top: 4px;
+    }
+    .about__stats .about__stat {
+      min-width: 0;
+      display: block;
+      padding: 0;
+      border: 0;
+    }
+    .about__stats .about__num { font-size: clamp(42px, 13vw, 52px); }
+    .about__stats .about__cap {
+      width: auto;
+      margin: 8px 0 0;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.35;
+    }
     .geography__stats { margin: 36px 0 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
     .geography__value { font-size: clamp(56px, 16vw, 88px); }
     .geography__caption { font-size: 16px; line-height: 1.4; }
@@ -1801,8 +1868,9 @@
   @media (max-width: 359px) {
     .request__card { padding-inline: 20px; }
     .services__lead { gap: 16px; }
-    .about__stat { grid-template-columns: 100px minmax(0, 1fr); gap: 16px; }
-    .about__num { font-size: 64px; }
+    .about__side > .about__stat { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; }
+    .about__side > .about__stat .about__num { font-size: 58px; }
+    .about__stats .about__num { font-size: 42px; }
   }
   /* ── Попап заявки ───────────────────────────────────────── */
   body.modal-open {
