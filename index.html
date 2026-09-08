@@ -20,7 +20,7 @@
   ═══════════════════════════════════════════════════════════════
   АССЕТЫ: все картинки — локально в assets/ (перенесены с временных ссылок
   Figma MCP перед деплоем): хиро hero.webp, логотип logo.webp + wordmark.svg,
-  услуги service-*.webp, карта geography-map.png, клиенты clients-bg.webp /
+  услуги service-*.webp, карта geography-map.png, клиенты clients-bg-{desktop,mobile}.webp /
   client-logo-*.png / client-letter-*.webp.
 
   ШРИФТЫ: Druk Cyr (заголовки) и SF Pro Display (текст) — локально в fonts/.
@@ -768,10 +768,14 @@
     position: absolute;
     inset: 0;
     z-index: -2;
+  }
+
+  .clients__bg img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: 80% center;
   }
   .clients::after {
     content: "";
@@ -1469,8 +1473,8 @@
       min-height: auto;
       padding: 60px var(--pad-side);
     }
-    .clients__bg {
-      object-position: 56% center;
+    .clients__bg img {
+      object-position: 54% center;
     }
     .clients__inner {
       height: auto;
@@ -2552,7 +2556,10 @@
 
 <section class="clients" id="clients">
 
-  <img width="1920" height="1080" loading="lazy" decoding="async" class="clients__bg" src="assets/clients-bg.webp" alt="">
+  <picture class="clients__bg" aria-hidden="true">
+    <source media="(max-width: 768px)" srcset="assets/clients-bg-mobile.webp" type="image/webp">
+    <img width="1916" height="821" loading="lazy" decoding="async" src="assets/clients-bg-desktop.webp" alt="">
+  </picture>
 
   <div class="clients__inner">
     <p class="section-label clients__label">[ Клиенты ]</p>
