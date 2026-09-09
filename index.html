@@ -399,6 +399,31 @@
     text-transform: uppercase;
     color: var(--label);
   }
+  .section-label--typing {
+    position: relative;
+    white-space: pre;
+  }
+  .section-label--typing::after {
+    content: attr(data-label);
+    visibility: hidden;
+  }
+  .section-label__text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: pre;
+  }
+  .section-label__fallback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
   .services__title {
     font-family: var(--font-display);
     font-weight: 500;
@@ -3265,6 +3290,61 @@
       } else {
         leadError.textContent = result.error;
       }
+    });
+  })();
+</script>
+
+<script>
+  (() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const typingDelay = 90;
+    const deletingDelay = 55;
+    const fullTextPause = 1200;
+    const emptyTextPause = 400;
+
+    document.querySelectorAll('.section-label').forEach(label => {
+      const fullText = label.textContent.trim();
+      if (!fullText) return;
+
+      const characters = Array.from(fullText);
+      const animatedText = document.createElement('span');
+      const fallbackText = document.createElement('span');
+      let index = 0;
+      let isDeleting = false;
+
+      label.dataset.label = fullText;
+      label.classList.add('section-label--typing');
+      animatedText.className = 'section-label__text';
+      animatedText.setAttribute('aria-hidden', 'true');
+      fallbackText.className = 'section-label__fallback';
+      fallbackText.textContent = fullText;
+      label.replaceChildren(animatedText, fallbackText);
+
+      const animate = () => {
+        animatedText.textContent = characters.slice(0, index).join('');
+
+        if (!isDeleting && index < characters.length) {
+          index += 1;
+          window.setTimeout(animate, typingDelay);
+          return;
+        }
+        if (!isDeleting) {
+          isDeleting = true;
+          window.setTimeout(animate, fullTextPause);
+          return;
+        }
+        if (index > 0) {
+          index -= 1;
+          window.setTimeout(animate, deletingDelay);
+          return;
+        }
+
+        isDeleting = false;
+        window.setTimeout(animate, emptyTextPause);
+      };
+
+      animate();
     });
   })();
 </script>

@@ -34,11 +34,6 @@ const cleanText = (value, maxLength) => {
   return value.replace(/[\r\n\t]+/g, ' ').trim().slice(0, maxLength);
 };
 
-const getPagePath = value => {
-  const path = cleanText(value, 180);
-  return path.startsWith('/') && !path.startsWith('//') ? path : '/';
-};
-
 export function onRequestOptions({ request }) {
   const requestOrigin = request.headers.get('Origin');
   if (!isAllowedOrigin(requestOrigin)) {
@@ -55,7 +50,6 @@ export function onRequestOptions({ request }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  const requestUrl = new URL(request.url);
   const requestOrigin = request.headers.get('Origin');
   if (!isAllowedOrigin(requestOrigin)) {
     return json({ ok: false, error: 'Заявка отправлена с недопустимого источника.' }, 403);
@@ -105,7 +99,6 @@ export async function onRequestPost({ request, env }) {
     return respond({ ok: false, error: 'Сервис заявок временно недоступен. Попробуйте позже.' }, 503);
   }
 
-  const page = new URL(getPagePath(payload.pagePath), requestUrl.origin).toString();
   const time = new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'medium',
     timeStyle: 'short',
@@ -118,7 +111,6 @@ export async function onRequestPost({ request, env }) {
     `Телефон: ${phone || 'Не указан'}`,
     `Email: ${email || 'Не указан'}`,
     `Связаться через: ${CONTACT_METHODS[contactMethod]}`,
-    `Страница: ${page}`,
     `Время: ${time}`
   ].join('\n');
 
