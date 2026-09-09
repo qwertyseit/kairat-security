@@ -2361,6 +2361,87 @@
   @media (max-width: 768px) {
     .menu { visibility: hidden; }
     .nav-open .menu { visibility: visible; }
+    .lead-modal__submit { margin-top: 42px; }
+
+    .about { gap: 48px; }
+    .about__side { gap: 28px; }
+    .about__intro {
+      max-width: 35ch;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .about__side > .about__stat {
+      grid-template-columns: minmax(94px, .55fr) minmax(0, 1fr);
+      gap: 20px;
+      min-height: 120px;
+      padding: 22px 20px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--line-dim);
+    }
+    .about__side > .about__stat .about__num {
+      font-size: clamp(68px, 20vw, 78px);
+      line-height: .85;
+    }
+    .about__side > .about__stat .about__cap {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .about__main { gap: 44px; }
+    .about__lead { gap: 22px; }
+    .about__title {
+      max-width: none;
+      font-size: clamp(32px, 8.5vw, 38px);
+      line-height: 1.02;
+    }
+    .about__desc {
+      max-width: 35ch;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .about__certs {
+      gap: 8px;
+      border: 0;
+    }
+    .about__cert,
+    .about__cert + .about__cert {
+      min-height: 64px;
+      padding: 16px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--line-dim);
+      color: #d0d0d0;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .about__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding-top: 0;
+    }
+    .about__stats .about__stat {
+      min-height: 146px;
+      padding: 18px 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--line-dim);
+    }
+    .about__stats .about__stat:nth-child(3) {
+      grid-column: 1 / -1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      align-items: center;
+      gap: 16px;
+    }
+    .about__stats .about__num { font-size: clamp(56px, 16vw, 64px); }
+    .about__stats .about__cap {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .about__stats .about__stat:nth-child(3) .about__cap { margin: 0; }
   }
 </style>
 </head>
