@@ -410,7 +410,6 @@
     color: var(--label);
   }
   .section-label--typing {
-    position: relative;
     white-space: pre;
   }
   .section-label--typing::after {
@@ -418,9 +417,6 @@
     visibility: hidden;
   }
   .section-label__text {
-    position: absolute;
-    top: 0;
-    left: 0;
     white-space: pre;
   }
   .section-label__fallback {
@@ -2503,6 +2499,21 @@
       line-height: 1.4;
     }
     .about__stats .about__stat:nth-child(3) .about__cap { margin: 0; }
+  }
+  .section-label.section-label--typing {
+    display: grid;
+    grid-template-areas: "label";
+  }
+  .section-label.section-label--typing::after,
+  .section-label.section-label--typing > .section-label__text {
+    grid-area: label;
+  }
+  @media (max-width: 768px) {
+    .clients__label.section-label--typing,
+    .clients__letters-label.section-label--typing {
+      position: static;
+      inset: auto;
+    }
   }
 </style>
 </head>
