@@ -15,6 +15,11 @@
 <meta property="og:image" content="https://kairatsecurity.kz/assets/hero.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="800">
+<script>
+  if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('reveal-ready');
+  }
+</script>
 
 <!--
   ═══════════════════════════════════════════════════════════════
@@ -94,6 +99,11 @@
     --label: #585858;                      /* лейблы секций [ ... ] */
     --overlay: rgba(0, 0, 0, 0.4);
     --pad-side: 60px;
+    --reveal-duration: 720ms;
+    --reveal-mobile-duration: 650ms;
+    --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --reveal-distance: 22px;
+    --reveal-mobile-distance: 16px;
     --content-max: 1080px; /* ширина контента макета (1200 − 2×60) */
     /* горизонтальный отступ секций: не меньше --pad-side, на широких экранах
        центрирует контент по ширине макета (фон при этом остаётся во всю ширину) */
@@ -423,6 +433,32 @@
     clip: rect(0 0 0 0);
     white-space: nowrap;
     border: 0;
+  }
+  html.reveal-ready [data-reveal],
+  .lead-modal.modal-reveal-ready [data-modal-reveal] {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-distance), 0);
+    transition: opacity var(--reveal-duration) var(--reveal-ease), transform var(--reveal-duration) var(--reveal-ease);
+  }
+  html.reveal-ready [data-reveal].is-revealed,
+  .lead-modal.modal-reveal-ready [data-modal-reveal].is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  @media (max-width: 768px) {
+    html.reveal-ready [data-reveal],
+    .lead-modal.modal-reveal-ready [data-modal-reveal] {
+      transform: translate3d(0, var(--reveal-mobile-distance), 0);
+      transition-duration: var(--reveal-mobile-duration);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.reveal-ready [data-reveal],
+    .lead-modal.modal-reveal-ready [data-modal-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
   .services__title {
     font-family: var(--font-display);
@@ -2476,7 +2512,7 @@
 
 <section class="hero">
 
-  <header class="topbar">
+  <header class="topbar" data-reveal data-reveal-delay="0">
     <div class="topbar__inner">
       <a class="logo" href="#top" aria-label="Kairat Security — на главную">
         <img width="175" height="176" class="logo__mark" src="assets/logo.webp" alt="">
@@ -2501,12 +2537,12 @@
   </header>
 
   <div class="hero__content">
-    <h1 class="hero__title">Обеспечиваем комплексную безопасность с&nbsp;2016 года</h1>
+    <h1 class="hero__title" data-reveal data-reveal-delay="130">Обеспечиваем комплексную безопасность с&nbsp;2016 года</h1>
 
     <div class="hero__aside">
-      <p class="hero__text">Охранное агентство «Kairat Security» обеспечивает круглосуточную охрану объектов и&nbsp;персонала любой сложности</p>
+      <p class="hero__text" data-reveal data-reveal-delay="260">Охранное агентство «Kairat Security» обеспечивает круглосуточную охрану объектов и&nbsp;персонала любой сложности</p>
 
-      <a class="cta" href="#contacts">
+      <a class="cta" href="#contacts" data-reveal data-reveal-delay="380">
         <span class="btn-label">Оставить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
@@ -2520,13 +2556,13 @@
 <section class="services" id="services">
 
   <div class="services__head">
-    <p class="section-label">[ Услуги ]</p>
-    <h2 class="services__title">Полный спектр услуг в&nbsp;сфере охраны и&nbsp;безопасности</h2>
+    <p class="section-label" data-reveal data-reveal-delay="0">[ Услуги ]</p>
+    <h2 class="services__title" data-reveal data-reveal-delay="120">Полный спектр услуг в&nbsp;сфере охраны и&nbsp;безопасности</h2>
   </div>
 
   <div class="services__list">
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="220">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-physical.webp" alt="">
         <h3 class="services__name">Физическая охрана</h3>
@@ -2534,7 +2570,7 @@
       <p class="services__desc">Обеспечиваем комплексную безопасность и&nbsp;контроль доступа на&nbsp;вашей территории</p>
     </div>
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="300">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-technical.webp" alt="">
         <h3 class="services__name">Техническая охрана</h3>
@@ -2542,7 +2578,7 @@
       <p class="services__desc">Проектируем и&nbsp;монтируем современные системы видеонаблюдения и&nbsp;сигнализации</p>
     </div>
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="380">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-gbr.webp" alt="">
         <h3 class="services__name">Пультовая охрана (ГБР)</h3>
@@ -2550,7 +2586,7 @@
       <p class="services__desc">Осуществляем круглосуточный мониторинг и&nbsp;мгновенное вооруженное реагирование на&nbsp;сигналы тревоги</p>
     </div>
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="460">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-cargo.webp" alt="">
         <h3 class="services__name">Сопровождение грузов</h3>
@@ -2558,7 +2594,7 @@
       <p class="services__desc">Гарантируем сохранность и&nbsp;безопасное перемещение ваших материальных ценностей</p>
     </div>
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="540">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-antispy.webp" alt="">
         <h3 class="services__name">Антишпионская проверка помещений и&nbsp;транспорта</h3>
@@ -2566,7 +2602,7 @@
       <p class="services__desc">Выявляем и&nbsp;устраняем каналы утечки информации, обеспечивая полную конфиденциальность</p>
     </div>
 
-    <div class="services__row">
+    <div class="services__row" data-reveal data-reveal-delay="620">
       <div class="services__lead">
         <img width="600" height="335" loading="lazy" decoding="async" class="services__img" src="assets/service-bodyguard.webp" alt="">
         <h3 class="services__name">Услуга телохранителей</h3>
@@ -2581,9 +2617,9 @@
 <section class="about" id="about">
 
   <div class="about__side">
-    <p class="section-label">[ О компании ]</p>
-    <p class="about__intro">Наша компания обладает большим опытом и&nbsp;постоянно развивается, внедряя современные технологии в&nbsp;сферу безопасности</p>
-    <div class="about__stat">
+    <p class="section-label" data-reveal data-reveal-delay="0">[ О компании ]</p>
+    <p class="about__intro" data-reveal data-reveal-delay="110">Наша компания обладает большим опытом и&nbsp;постоянно развивается, внедряя современные технологии в&nbsp;сферу безопасности</p>
+    <div class="about__stat" data-reveal data-reveal-delay="220">
       <p class="about__num">10</p>
       <p class="about__cap about__cap--narrow">Лет в&nbsp;сфере охраны и&nbsp;безопасности</p>
     </div>
@@ -2591,26 +2627,26 @@
 
   <div class="about__main">
     <div class="about__lead">
-      <h2 class="about__title">ТОО&nbsp;«Кайрат Секьюрити» —— надежный партнер в&nbsp;сфере охранных услуг с&nbsp;2016 года</h2>
-      <p class="about__desc">Благодаря команде профессионалов и&nbsp;современному высокотехнологичному оборудованию, мы&nbsp;обеспечиваем надежную охрану как частных лиц и&nbsp;их&nbsp;собственности, так и&nbsp;организаций разного уровня</p>
+      <h2 class="about__title" data-reveal data-reveal-delay="150">ТОО&nbsp;«Кайрат Секьюрити» —— надежный партнер в&nbsp;сфере охранных услуг с&nbsp;2016 года</h2>
+      <p class="about__desc" data-reveal data-reveal-delay="270">Благодаря команде профессионалов и&nbsp;современному высокотехнологичному оборудованию, мы&nbsp;обеспечиваем надежную охрану как частных лиц и&nbsp;их&nbsp;собственности, так и&nbsp;организаций разного уровня</p>
     </div>
 
     <div class="about__certs">
-      <p class="about__cert">Свидетельство «Лидер отрасли 2019»</p>
-      <p class="about__cert">Сертификат по&nbsp;БиОТ</p>
-      <p class="about__cert">Лицензия на&nbsp;осуществление частной охранной деятельности</p>
+      <p class="about__cert" data-reveal data-reveal-delay="390">Свидетельство «Лидер отрасли 2019»</p>
+      <p class="about__cert" data-reveal data-reveal-delay="480">Сертификат по&nbsp;БиОТ</p>
+      <p class="about__cert" data-reveal data-reveal-delay="570">Лицензия на&nbsp;осуществление частной охранной деятельности</p>
     </div>
 
     <div class="about__stats">
-      <div class="about__stat">
+      <div class="about__stat" data-reveal data-reveal-delay="450">
         <p class="about__num">24/7</p>
         <p class="about__cap">Круглосуточный мониторинг и&nbsp;техническая поддержка</p>
       </div>
-      <div class="about__stat">
+      <div class="about__stat" data-reveal data-reveal-delay="540">
         <p class="about__num">&gt;34</p>
         <p class="about__cap">Круглосуточный мониторинг и&nbsp;техническая поддержка</p>
       </div>
-      <div class="about__stat">
+      <div class="about__stat" data-reveal data-reveal-delay="630">
         <p class="about__num">&gt;43</p>
         <p class="about__cap">Систем безопасности устанавливаем ежемесячно</p>
       </div>
@@ -2623,23 +2659,23 @@
 
   <img width="2162" height="1244" loading="lazy" decoding="async" class="geography__map" src="assets/geography-map.png" alt="">
 
-  <p class="section-label geography__label">[ География ]</p>
-  <h2 class="geography__title">Работаем по&nbsp;всему Казахстану</h2>
+  <p class="section-label geography__label" data-reveal data-reveal-delay="0">[ География ]</p>
+  <h2 class="geography__title" data-reveal data-reveal-delay="120">Работаем по&nbsp;всему Казахстану</h2>
 
   <div class="geography__stats">
-    <div class="geography__stat">
+    <div class="geography__stat" data-reveal data-reveal-delay="240">
       <p class="geography__value">98%</p>
       <p class="geography__caption geography__caption--wide">Договоров продлеваются из&nbsp;года в&nbsp;год</p>
     </div>
-    <div class="geography__stat">
+    <div class="geography__stat" data-reveal data-reveal-delay="330">
       <p class="geography__value">&gt; 132</p>
       <p class="geography__caption">Объектов под охраной</p>
     </div>
-    <div class="geography__stat">
+    <div class="geography__stat" data-reveal data-reveal-delay="420">
       <p class="geography__value">&gt; 107</p>
       <p class="geography__caption">Краж предотвращено</p>
     </div>
-    <div class="geography__stat">
+    <div class="geography__stat" data-reveal data-reveal-delay="510">
       <p class="geography__value">&gt; 8</p>
       <p class="geography__caption">Регионов присутствия</p>
     </div>
@@ -2652,19 +2688,19 @@
   <div class="request__card">
     <div class="request__content">
       <div class="request__head">
-        <p class="section-label">[ Контакты ]</p>
-        <h2 class="request__title">Обсудим вашу безопасность?</h2>
+        <p class="section-label" data-reveal data-reveal-delay="0">[ Контакты ]</p>
+        <h2 class="request__title" data-reveal data-reveal-delay="120">Обсудим вашу безопасность?</h2>
       </div>
-      <p class="request__text">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
+      <p class="request__text" data-reveal data-reveal-delay="220">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
     </div>
 
     <form class="request__form" action="#" method="post">
       <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="request__fields">
-        <input class="request__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
-        <input class="request__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
+        <input class="request__field" data-reveal data-reveal-delay="310" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
+        <input class="request__field" data-reveal data-reveal-delay="390" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
       </div>
-      <button class="request__submit" type="submit">
+      <button class="request__submit" data-reveal data-reveal-delay="470" type="submit">
         <span class="btn-label">Отправить заявку</span>
         <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
@@ -2684,12 +2720,12 @@
   </picture>
 
   <div class="clients__inner">
-    <p class="section-label clients__label">[ Клиенты ]</p>
-    <h2 class="clients__title">Нам доверяют свою безопасность</h2>
+    <p class="section-label clients__label" data-reveal data-reveal-delay="0">[ Клиенты ]</p>
+    <h2 class="clients__title" data-reveal data-reveal-delay="120">Нам доверяют свою безопасность</h2>
 
     <div class="clients__intro">
-      <p class="clients__text">Лидеры отрасли&nbsp;— наши постоянные заказчики. Вы&nbsp;можете быть уверены в&nbsp;нашем профессионализме</p>
-      <a class="clients__cta" href="#contacts">
+      <p class="clients__text" data-reveal data-reveal-delay="220">Лидеры отрасли&nbsp;— наши постоянные заказчики. Вы&nbsp;можете быть уверены в&nbsp;нашем профессионализме</p>
+      <a class="clients__cta" href="#contacts" data-reveal data-reveal-delay="310">
         <span class="btn-label">Оставить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
@@ -2698,45 +2734,45 @@
     </div>
 
     <div class="clients__logos" aria-label="Клиенты Kairat Security">
-      <div class="clients__logo-card clients__logo-card--nomad">
+      <div class="clients__logo-card clients__logo-card--nomad" data-reveal data-reveal-delay="360">
         <img width="2446" height="190" loading="lazy" decoding="async" class="clients__logo clients__logo--nomad" src="assets/client-logo-nomadcar.png" alt="Nomadcar">
       </div>
-      <div class="clients__logo-card clients__logo-card--sultan">
+      <div class="clients__logo-card clients__logo-card--sultan" data-reveal data-reveal-delay="430">
         <img width="500" height="500" loading="lazy" decoding="async" class="clients__logo clients__logo--sultan" src="assets/client-logo-sultan.png" alt="Sultan">
       </div>
-      <div class="clients__logo-card clients__logo-card--round">
+      <div class="clients__logo-card clients__logo-card--round" data-reveal data-reveal-delay="500">
         <img width="1080" height="1105" loading="lazy" decoding="async" class="clients__logo clients__logo--round" src="assets/client-logo-round.png" alt="Клиент Kairat Security">
       </div>
-      <div class="clients__logo-card clients__logo-card--luxcar">
+      <div class="clients__logo-card clients__logo-card--luxcar" data-reveal data-reveal-delay="570">
         <img width="645" height="665" loading="lazy" decoding="async" class="clients__logo clients__logo--luxcar" src="assets/client-logo-luxcar.png" alt="Lux Car">
       </div>
-      <div class="clients__logo-card clients__logo-card--sinomost">
+      <div class="clients__logo-card clients__logo-card--sinomost" data-reveal data-reveal-delay="640">
         <img width="600" height="302" loading="lazy" decoding="async" class="clients__logo clients__logo--sinomost" src="assets/client-logo-sinomost.png" alt="Sinomost">
       </div>
-      <div class="clients__logo-card clients__logo-card--xcmg">
+      <div class="clients__logo-card clients__logo-card--xcmg" data-reveal data-reveal-delay="710">
         <img width="600" height="600" loading="lazy" decoding="async" class="clients__logo clients__logo--xcmg" src="assets/client-logo-xcmg.png" alt="XCMG">
       </div>
-      <div class="clients__logo-card clients__logo-card--samruk">
+      <div class="clients__logo-card clients__logo-card--samruk" data-reveal data-reveal-delay="780">
         <img width="1200" height="546" loading="lazy" decoding="async" class="clients__logo clients__logo--samruk" src="assets/client-logo-samruk.png" alt="Samruk Kazyna">
       </div>
-      <div class="clients__logo-card clients__logo-card--ktz">
+      <div class="clients__logo-card clients__logo-card--ktz" data-reveal data-reveal-delay="850">
         <img width="432" height="73" loading="lazy" decoding="async" class="clients__logo clients__logo--ktz" src="assets/client-logo-ktz.png" alt="KTZ Express">
       </div>
-      <div class="clients__logo-card clients__logo-card--damu">
+      <div class="clients__logo-card clients__logo-card--damu" data-reveal data-reveal-delay="920">
         <img width="1080" height="1080" loading="lazy" decoding="async" class="clients__logo clients__logo--damu" src="assets/client-logo-damu.png" alt="Damu School">
       </div>
-      <div class="clients__logo-card clients__logo-card--kep">
+      <div class="clients__logo-card clients__logo-card--kep" data-reveal data-reveal-delay="990">
         <img width="229" height="93" loading="lazy" decoding="async" class="clients__logo clients__logo--kep" src="assets/client-logo-kep.png" alt="KEP">
       </div>
     </div>
 
-    <p class="section-label clients__letters-label">[ Благодарственные письма ]</p>
-    <h3 class="clients__letters-title">Благодарственные письма</h3>
+    <p class="section-label clients__letters-label" data-reveal data-reveal-delay="0">[ Благодарственные письма ]</p>
+    <h3 class="clients__letters-title" data-reveal data-reveal-delay="120">Благодарственные письма</h3>
 
     <div class="clients__letters">
-      <img width="1400" height="987" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-1.webp" alt="Благодарственное письмо клиента">
-      <img width="1400" height="989" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-2.webp" alt="Благодарственное письмо клиента">
-      <img width="1400" height="997" loading="lazy" decoding="async" class="clients__letter" src="assets/client-letter-3.webp" alt="Благодарственное письмо клиента">
+      <img width="1400" height="987" loading="lazy" decoding="async" class="clients__letter" data-reveal data-reveal-delay="240" src="assets/client-letter-1.webp" alt="Благодарственное письмо клиента">
+      <img width="1400" height="989" loading="lazy" decoding="async" class="clients__letter" data-reveal data-reveal-delay="330" src="assets/client-letter-2.webp" alt="Благодарственное письмо клиента">
+      <img width="1400" height="997" loading="lazy" decoding="async" class="clients__letter" data-reveal data-reveal-delay="420" src="assets/client-letter-3.webp" alt="Благодарственное письмо клиента">
     </div>
   </div>
 
@@ -2745,7 +2781,7 @@
 <section class="final-cta" id="cta">
 
   <div class="final-cta__inner">
-    <h2 class="final-cta__title">Обсудим наше сотрудничество?</h2>
+    <h2 class="final-cta__title" data-reveal data-reveal-delay="0">Обсудим наше сотрудничество?</h2>
 
     <span class="final-cta__line final-cta__line--top"></span>
     <span class="final-cta__line final-cta__line--center"></span>
@@ -2755,15 +2791,15 @@
     <span class="final-cta__line final-cta__line--logo-right"></span>
 
     <div class="final-cta__content">
-      <p class="final-cta__text">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
+      <p class="final-cta__text" data-reveal data-reveal-delay="130">Проконсультируем, подберем оптимальное решение и&nbsp;предложим самые выгодные условия</p>
 
       <form class="final-cta__form" action="#" method="post">
         <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="final-cta__fields">
-          <input class="final-cta__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
-          <input class="final-cta__field" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
+          <input class="final-cta__field" data-reveal data-reveal-delay="260" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
+          <input class="final-cta__field" data-reveal data-reveal-delay="340" type="tel" name="phone" placeholder="+7 (777) 123-45-67*" aria-label="Номер телефона" autocomplete="tel" inputmode="tel" maxlength="30" required>
         </div>
-        <button class="final-cta__submit" type="submit">
+        <button class="final-cta__submit" data-reveal data-reveal-delay="430" type="submit">
           <span class="btn-label">Отправить заявку</span>
           <svg viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M0 5.5H12M12 5.5L7.5 1M12 5.5L7.5 10" stroke="white" stroke-width="1"/>
@@ -2773,7 +2809,7 @@
       </form>
     </div>
 
-    <div class="final-cta__wordmark" aria-hidden="true">
+    <div class="final-cta__wordmark" data-reveal data-reveal-delay="520" aria-hidden="true">
       <img width="92" height="26" loading="lazy" decoding="async" src="assets/wordmark.svg" alt="">
     </div>
   </div>
@@ -2783,18 +2819,18 @@
 <footer class="contacts" id="contacts">
 
   <div class="contacts__top">
-    <h2 class="contacts__title">Контакты</h2>
+    <h2 class="contacts__title" data-reveal data-reveal-delay="0">Контакты</h2>
 
     <div class="contacts__list">
-      <div class="contacts__row">
+      <div class="contacts__row" data-reveal data-reveal-delay="120">
         <span class="section-label">[ Адрес ]</span>
         <span class="contacts__value">Казахстан, г.&nbsp;Алматы, улица Осипенко 35а</span>
       </div>
-      <div class="contacts__row">
+      <div class="contacts__row" data-reveal data-reveal-delay="210">
         <span class="section-label">[ Email ]</span>
         <a class="contacts__value" href="mailto:serikbekovermek@gmail.com">serikbekovermek@gmail.com</a>
       </div>
-      <div class="contacts__row">
+      <div class="contacts__row" data-reveal data-reveal-delay="300">
         <span class="section-label">[ Whatsapp ]</span>
         <a class="contacts__value" href="https://wa.me/77781582565" target="_blank" rel="noopener">+7 (778) 158-25-65</a>
       </div>
@@ -2807,15 +2843,15 @@
     <span class="contacts__tick contacts__tick--r" aria-hidden="true"></span>
 
     <div class="contacts__col">
-      <p class="section-label">[ Генеральный директор ]</p>
-      <p class="contacts__name">Серикбеков Ермек Туйебаевич</p>
-      <a class="contacts__phone" href="tel:+77775922722">+7 (777) 592-27-22</a>
-      <a class="contacts__phone" href="tel:+77002147617">+7 (700) 214-76-17</a>
+      <p class="section-label" data-reveal data-reveal-delay="390">[ Генеральный директор ]</p>
+      <p class="contacts__name" data-reveal data-reveal-delay="470">Серикбеков Ермек Туйебаевич</p>
+      <a class="contacts__phone" data-reveal data-reveal-delay="550" href="tel:+77775922722">+7 (777) 592-27-22</a>
+      <a class="contacts__phone" data-reveal data-reveal-delay="620" href="tel:+77002147617">+7 (700) 214-76-17</a>
     </div>
 
     <div class="contacts__col">
-      <p class="section-label">[ Работа в&nbsp;компании ]</p>
-      <a class="contacts__vacancy" href="tel:+77775922722" data-lead-intent="vacancy">
+      <p class="section-label" data-reveal data-reveal-delay="430">[ Работа в&nbsp;компании ]</p>
+      <a class="contacts__vacancy" data-reveal data-reveal-delay="510" href="tel:+77775922722" data-lead-intent="vacancy">
         Оставить заявку на&nbsp;вакансию охранника
         <span aria-hidden="true">+</span>
       </a>
@@ -2828,15 +2864,15 @@
   <button class="lead-modal__close" type="button" aria-label="Закрыть форму" data-lead-close></button>
 
   <div class="lead-modal__card">
-    <h2 class="lead-modal__title" id="lead-modal-title">Оставить заявку</h2>
-    <p class="lead-modal__text" id="lead-modal-description">Обсудим вашу безопасность. Укажите имя и&nbsp;удобный способ связи</p>
+    <h2 class="lead-modal__title" id="lead-modal-title" data-modal-reveal data-reveal-delay="0">Оставить заявку</h2>
+    <p class="lead-modal__text" id="lead-modal-description" data-modal-reveal data-reveal-delay="100">Обсудим вашу безопасность. Укажите имя и&nbsp;удобный способ связи</p>
 
     <form class="lead-modal__form" action="#" method="post" novalidate>
       <input type="hidden" name="request_type" value="consultation">
       <input class="form__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <input class="lead-modal__field" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
+      <input class="lead-modal__field" data-modal-reveal data-reveal-delay="200" type="text" name="name" placeholder="Ваше имя*" aria-label="Ваше имя" autocomplete="name" maxlength="100" required>
 
-      <div class="lead-modal__row">
+      <div class="lead-modal__row" data-modal-reveal data-reveal-delay="280">
         <div class="lead-modal__phone-wrap">
           <div class="lead-modal__phone">
             <button class="lead-modal__country" type="button" aria-label="Выбрать страну: Казахстан, код +7" aria-haspopup="listbox" aria-expanded="false" aria-controls="lead-country-list">
@@ -2873,7 +2909,7 @@
         <input class="lead-modal__field" type="email" name="email" placeholder="Ваша почта" aria-label="Электронная почта" autocomplete="email" maxlength="254">
       </div>
 
-      <select class="lead-modal__select" name="contact_method" aria-label="Удобный способ связи" required>
+      <select class="lead-modal__select" data-modal-reveal data-reveal-delay="360" name="contact_method" aria-label="Удобный способ связи" required>
         <option value="" selected disabled>Где связаться?</option>
         <option value="whatsapp">WhatsApp</option>
         <option value="email">Email</option>
@@ -2883,7 +2919,7 @@
       <p class="lead-modal__error" aria-live="polite"></p>
       <p class="lead-modal__success" aria-live="polite"></p>
 
-      <button class="lead-modal__submit" type="submit">
+      <button class="lead-modal__submit" data-modal-reveal data-reveal-delay="450" type="submit">
         <span class="btn-label">Отправить заявку</span>
         <svg viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M0 7H16M16 7L10 1M16 7L10 13" stroke="white" stroke-width="1"/>
@@ -3072,6 +3108,22 @@
 
     const syncPhonePrefix = () => { countryCode.hidden = leadPhone.value.trim().startsWith('+'); };
     leadPhone.addEventListener('input', syncPhonePrefix);
+    const revealModalForm = () => {
+      const targets = [...leadModal.querySelectorAll('[data-modal-reveal]')];
+      if (motionQuery.matches) {
+        leadModal.classList.remove('modal-reveal-ready');
+        return;
+      }
+
+      targets.forEach(target => target.classList.remove('is-revealed'));
+      leadModal.classList.add('modal-reveal-ready');
+      requestAnimationFrame(() => {
+        targets.forEach(target => {
+          const delay = Number(target.dataset.revealDelay) || 0;
+          window.setTimeout(() => target.classList.add('is-revealed'), delay);
+        });
+      });
+    };
     const openLeadModal = (intent = 'consultation') => {
       leadLastFocus = document.activeElement;
       if (document.body.classList.contains('nav-open')) setNavOpen(false, false);
@@ -3086,6 +3138,7 @@
       updateRequiredContact();
       leadModal.hidden = false;
       leadModal.setAttribute('aria-hidden', 'false');
+      revealModalForm();
       document.body.classList.add('modal-open');
       isolateControls([leadModal]);
       leadName.focus({ preventScroll: true });
@@ -3093,6 +3146,7 @@
     };
     const closeLeadModal = () => {
       closeCountryList();
+      leadModal.classList.remove('modal-reveal-ready');
       leadModal.hidden = true;
       leadModal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
@@ -3296,6 +3350,59 @@
 
 <script>
   (() => {
+    const root = document.documentElement;
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const targets = [...document.querySelectorAll('[data-reveal]')];
+    let observer;
+
+    const reveal = target => {
+      if (target.dataset.revealed) return;
+      target.dataset.revealed = 'true';
+      const delay = Number(target.dataset.revealDelay) || 0;
+
+      window.setTimeout(() => {
+        target.classList.add('is-revealed');
+        target.dispatchEvent(new Event('reveal:entered'));
+      }, delay);
+    };
+
+    const revealImmediately = () => {
+      root.classList.remove('reveal-ready');
+      targets.forEach(reveal);
+    };
+
+    if (motionQuery.matches) {
+      revealImmediately();
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      revealImmediately();
+      return;
+    }
+
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        reveal(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, {
+      rootMargin: '0px 0px -12% 0px',
+      threshold: 0.01
+    });
+
+    targets.forEach(target => observer.observe(target));
+    motionQuery.addEventListener('change', event => {
+      if (!event.matches) return;
+      observer.disconnect();
+      revealImmediately();
+    }, { once: true });
+  })();
+</script>
+
+<script>
+  (() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const typingDelay = 90;
@@ -3303,7 +3410,9 @@
     const fullTextPause = 1200;
     const emptyTextPause = 400;
 
-    document.querySelectorAll('.section-label').forEach(label => {
+    const startTypewriter = label => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (label.dataset.typewriterStarted) return;
       const fullText = label.textContent.trim();
       if (!fullText) return;
 
@@ -3314,6 +3423,7 @@
       let isDeleting = false;
 
       label.dataset.label = fullText;
+      label.dataset.typewriterStarted = 'true';
       label.classList.add('section-label--typing');
       animatedText.className = 'section-label__text';
       animatedText.setAttribute('aria-hidden', 'true');
@@ -3345,6 +3455,15 @@
       };
 
       animate();
+    };
+
+    document.querySelectorAll('.section-label').forEach(label => {
+      const revealTarget = label.closest('[data-reveal]');
+      if (revealTarget && !revealTarget.classList.contains('is-revealed')) {
+        revealTarget.addEventListener('reveal:entered', () => startTypewriter(label), { once: true });
+      } else {
+        startTypewriter(label);
+      }
     });
   })();
 </script>
