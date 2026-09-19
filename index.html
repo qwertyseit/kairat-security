@@ -374,6 +374,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    min-height: 44px;
   }
   .logo__mark {
     width: 44px;
@@ -402,7 +403,8 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 10px 0;
+    min-height: 44px;
+    padding: 15px 0;
     transition: opacity 0.2s;
   }
   .menu a:hover { opacity: 0.7; }
@@ -3368,40 +3370,42 @@
       if (digits.length === 10) return `+7${digits}`;
       return `+${digits.replace(/^8/, '7')}`;
     };
-    const setSubmitState = (form, isSubmitting) => {
-      const button = form.querySelector('[type="submit"]');
-      const label = button.querySelector('.btn-label');
-      if (!button.dataset.defaultLabel) button.dataset.defaultLabel = label.textContent;
-      button.disabled = isSubmitting;
-      button.setAttribute('aria-busy', String(isSubmitting));
-      label.textContent = isSubmitting ? 'Отправляем…' : button.dataset.defaultLabel;
-    };
-    const sendLead = async (form, isModal = false) => {
+    const sendLead = (form, isModal = false) => {
       const payload = {
         name: form.elements.name.value.trim(),
         phone: formatPhone(form.elements.phone.value, isModal),
         email: isModal ? form.elements.email.value.trim() : '',
         contactMethod: isModal ? form.elements.contact_method.value : 'phone',
-        pagePath: `${window.location.pathname}${window.location.hash}`,
-        website: form.elements.website?.value || ''
+        requestType: isModal ? form.elements.request_type.value : 'consultation',
+        country: isModal ? form.elements.country.value : ''
       };
-      setSubmitState(form, true);
+      const contactMethods = {
+        whatsapp: 'WhatsApp',
+        email: 'Email',
+        phone: 'Телефон'
+      };
+      const message = [
+        payload.requestType === 'vacancy'
+          ? 'Здравствуйте! Хочу оставить заявку на вакансию охранника.'
+          : 'Здравствуйте! Хочу оставить заявку на охранные услуги.',
+        '',
+        `Имя: ${payload.name}`,
+        `Телефон: ${payload.phone}`,
+        ...(payload.country ? [`Страна: ${payload.country}`] : []),
+        ...(payload.email ? [`Email: ${payload.email}`] : []),
+        ...(isModal ? [`Предпочтительный способ связи: ${contactMethods[payload.contactMethod]}`] : [])
+      ].join('\n');
+      const whatsappUrl = `https://wa.me/77781582565?text=${encodeURIComponent(message)}`;
       try {
-        const response = await fetch('/api/lead', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await response.json().catch(() => null);
-        if (!response.ok || !result?.ok) {
-          throw new Error(result?.error || 'Не удалось отправить заявку. Попробуйте ещё раз.');
+        const popup = window.open(whatsappUrl, '_blank');
+        if (popup) {
+          popup.opener = null;
+        } else {
+          window.location.assign(whatsappUrl);
         }
         return { ok: true };
       } catch (error) {
-        return { ok: false, error: error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.' };
-      } finally {
-        setSubmitState(form, false);
+        return { ok: false, error: 'Не удалось открыть WhatsApp. Попробуйте ещё раз.' };
       }
     };
     const setShortFeedback = (feedback, message, state) => {
@@ -3426,7 +3430,7 @@
         const result = await sendLead(form);
         if (result.ok) {
           form.reset();
-          setShortFeedback(feedback, 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.', 'success');
+          setShortFeedback(feedback, 'Черновик сообщения открыт в WhatsApp. Отправьте его, чтобы заявка ушла.', 'success');
         } else {
           setShortFeedback(feedback, result.error, 'error');
         }
@@ -3519,7 +3523,7 @@
         leadPhone.required = false;
         leadEmail.required = false;
         syncPhonePrefix();
-        leadSuccess.textContent = 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.';
+        leadSuccess.textContent = 'Черновик сообщения открыт в WhatsApp. Отправьте его, чтобы заявка ушла.';
       } else {
         leadError.textContent = result.error;
       }
